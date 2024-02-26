@@ -1,0 +1,24 @@
+{
+  "tests": [
+    {
+      "name": "run program",
+      "setup": "",
+      "run": "dotnet run --project Galaga",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 50
+    },
+    {
+      "name": "run student tests",
+      "setup": "",
+      "run": "dotnet run --project GalagaTests",
+      "input": "",
+      "output": "",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 50
+    }
+  ]
+}

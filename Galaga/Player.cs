@@ -3,13 +3,16 @@ using DIKUArcade.Graphics;
 
 namespace Galaga;
 public class Player {
-    // TODO: Add private fields
+    private Entity entity;
+    private DynamicShape shape;
 
     public Player(DynamicShape shape, IBaseImage image) {
+        entity = new Entity(shape, image);
+        this.shape = shape;
     }
 
     public void Render() {
-        // TODO: render the player entity
+        entity.RenderEntity();
     }
 
     public void Move() {

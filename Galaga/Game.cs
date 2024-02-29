@@ -23,7 +23,7 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     public override void Update(){
-        throw new System.NotImplementedException("Galaga game has no entities to update yet.");
+        // window.PollEvents();
     }
 
     private void KeyPress(KeyboardKey key) {

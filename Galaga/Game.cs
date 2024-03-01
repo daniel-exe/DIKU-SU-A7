@@ -23,7 +23,8 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     public override void Update(){
-        // window.PollEvents();
+        window.PollEvents();
+
     }
 
     private void KeyPress(KeyboardKey key) {

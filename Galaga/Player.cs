@@ -21,17 +21,11 @@ public class Player {
 
     public void Move() {
         shape.Move();
-        if (shape.Position.X > 1.0f) {
-            shape.Position.X = 1.0f;
+        if (shape.Position.X > 0.9f) {
+            shape.Position.X = 0.9f;
         }
         if (shape.Position.X < 0.0f) {
             shape.Position.X = 0.0f;
-        }
-        if (shape.Position.Y > 1.0f) {
-            shape.Position.Y = 1.0f;
-        }
-        if (shape.Position.Y < 0.0f) {
-            shape.Position.Y = 0.0f;
         }
     }
 
@@ -55,5 +49,9 @@ public class Player {
 
     private void UpdateDirection() {
         shape.ChangeDirection( new Vec2F((moveLeft + moveRight), shape.Direction.Y) );
+    }
+
+    public Vec2F GetPosition() {
+        return entity.Shape.Position;
     }
 }

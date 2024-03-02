@@ -1,5 +1,6 @@
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
+using DIKUArcade.Math;
 
 namespace Galaga;
 public class Player {
@@ -19,24 +20,40 @@ public class Player {
     }
 
     public void Move() {
-        // TODO: move the shape and guard against the window borders
+        shape.Move();
+        if (shape.Position.X > 1.0f) {
+            shape.Position.X = 1.0f;
+        }
+        if (shape.Position.X < 0.0f) {
+            shape.Position.X = 0.0f;
+        }
+        if (shape.Position.Y > 1.0f) {
+            shape.Position.Y = 1.0f;
+        }
+        if (shape.Position.Y < 0.0f) {
+            shape.Position.Y = 0.0f;
+        }
     }
 
     public void SetMoveLeft(bool val) {
         if (val == true) {
-            moveLeft += MOVEMENT_SPEED;
-        } else {
             moveLeft -= MOVEMENT_SPEED;
+        } else {
+            moveLeft = 0.0f;
         }
+        UpdateDirection();
     }
 
     public void SetMoveRight(bool val) {
         if (val == true) {
             moveRight += MOVEMENT_SPEED;
         } else {
-            moveRight -= MOVEMENT_SPEED;
+            moveRight = 0.0f;
         }
-        // TODO:set moveRight appropriately and call UpdateDirection()
+        UpdateDirection();
     }
 
+    private void UpdateDirection() {
+        shape.ChangeDirection( new Vec2F((moveLeft + moveRight), shape.Direction.Y) );
+    }
 }

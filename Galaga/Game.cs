@@ -75,7 +75,6 @@ public class Game : DIKUGame, IGameEventProcessor {
             default:
                 break;
         }
-        // TODO: switch on key string and set the player's move direction
     }
 
     private void KeyRelease(KeyboardKey key) {
@@ -114,20 +113,27 @@ public class Game : DIKUGame, IGameEventProcessor {
 
     private void IterateShots() {
         playerShots.Iterate(shot => {
-            shot.Move(); // TODO: move the shot's shape
-            if (shot.GetPosition().Y > 0.9f) {
+            shot.Move();
+            if (shot.GetPosition().Y > 1.0f) {
                 shot.DeleteEntity();
-                // TODO: delete shot
             } else {
                 enemies.Iterate(enemy => {
                     if (CollisionDetection.Aabb(shot.Shape.AsDynamicShape(),
                         enemy.Shape).Collision) {
-                        shot.DeleteEntity();
-                        enemy.DeleteEntity();
+                            var explosionExtent = new Vec2F(0.14f, 0.14f);
+                            AddExplosion(enemy.Shape.Position, explosionExtent);
+                            shot.DeleteEntity();
+                            enemy.DeleteEntity();
                         }
-                // TODO: if collision between shot and enemy -> delete both entities
                 });
             }
         });
+    }
+
+    public void AddExplosion(Vec2F position, Vec2F extent) {
+        var explosionShape = new DynamicShape(position, extent);
+        var explotionLength = EXPLOSION_LENGTH_MS;
+        var explosionStride = new ImageStride(EXPLOSION_LENGTH_MS/8,explosionStrides);
+        enemyExplosions.AddAnimation(explosionShape, explotionLength, explosionStride);
     }
 }

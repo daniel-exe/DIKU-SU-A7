@@ -8,7 +8,7 @@ public class Player {
     private DynamicShape shape;
     private float moveLeft = 0.0f;
     private float moveRight = 0.0f;
-    private const float MOVEMENT_SPEED = 0.1f;
+    private const float MOVEMENT_SPEED = 0.01f;
 
     public Player(DynamicShape shape, IBaseImage image) {
         entity = new Entity(shape, image);
@@ -21,8 +21,8 @@ public class Player {
 
     public void Move() {
         shape.Move();
-        if (shape.Position.X > 0.9f) {
-            shape.Position.X = 0.9f;
+        if (shape.Position.X > 1.0f-shape.Extent.X) {
+            shape.Position.X = 1.0f-shape.Extent.X;
         }
         if (shape.Position.X < 0.0f) {
             shape.Position.X = 0.0f;
@@ -30,7 +30,7 @@ public class Player {
     }
 
     public void SetMoveLeft(bool val) {
-        if (val == true) {
+        if (val) {
             moveLeft -= MOVEMENT_SPEED;
         } else {
             moveLeft = 0.0f;
@@ -39,7 +39,7 @@ public class Player {
     }
 
     public void SetMoveRight(bool val) {
-        if (val == true) {
+        if (val) {
             moveRight += MOVEMENT_SPEED;
         } else {
             moveRight = 0.0f;

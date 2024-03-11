@@ -51,7 +51,7 @@ public class TestsPlayer {
     }
 
     [Test]
-    public void TestMoveBoundary() {
+    public void TestMoveLeftBoundary() {
         player.SetMoveLeft(true);
         while (player.GetPosition().X > 0.0f) {
             player.Move();
@@ -61,5 +61,18 @@ public class TestsPlayer {
         player.SetMoveLeft(false);
 
         Assert.True(player.GetPosition().X == 0.0f);
+    }
+
+    [Test]
+    public void TestMoveRightBoundary() {
+        player.SetMoveRight(true);
+        while (player.GetPosition().X < 0.9f) {
+            player.Move();
+        }
+
+        player.Move();
+        player.SetMoveRight(false);
+
+        Assert.True(player.GetPosition().X == 0.9f);
     }
 }

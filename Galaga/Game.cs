@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Collections.Generic;
 using DIKUArcade.Entities;
@@ -64,7 +65,10 @@ public class Game : DIKUGame, IGameEventProcessor {
     private void KeyPress(KeyboardKey key) {
         switch(key) {
             case KeyboardKey.Escape:
-                window.CloseWindow();
+                GameEvent closeWindow = new GameEvent();
+                closeWindow.EventType = GameEventType.InputEvent;
+                closeWindow.Message = "Close Window";
+                eventBus.RegisterEvent(closeWindow);
                 break;
             case KeyboardKey.Left:
                 player.SetMoveLeft(true);
@@ -108,7 +112,8 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        // gameEvent.Message;
+        window.CloseWindow();
+        Console.WriteLine(gameEvent.Message);
     }
 
     private void IterateShots() {
@@ -133,7 +138,7 @@ public class Game : DIKUGame, IGameEventProcessor {
     public void AddExplosion(Vec2F position, Vec2F extent) {
         var explosionShape = new DynamicShape(position, extent);
         var explotionLength = EXPLOSION_LENGTH_MS;
-        var explosionStride = new ImageStride(EXPLOSION_LENGTH_MS/8,explosionStrides);
+        var explosionStride = new ImageStride(EXPLOSION_LENGTH_MS/8, explosionStrides);
         enemyExplosions.AddAnimation(explosionShape, explotionLength, explosionStride);
     }
 }

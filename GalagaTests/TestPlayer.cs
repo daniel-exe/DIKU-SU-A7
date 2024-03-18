@@ -15,26 +15,32 @@ using Galaga;
 namespace GalagaTests;
 
 public class TestsPlayer {
-
-    [SetUp]
-    public void Setup() {}
-
     private Player player = new Player(
         new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
         new NoImage()
     );
 
+    private GameEvent moveEvent = new GameEvent();
+
+    [SetUp]
+    public void Setup() {
+        player = new Player(
+            new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
+            new NoImage()
+        );
+
+        moveEvent.EventType = GameEventType.PlayerEvent;
+        moveEvent.StringArg1 = "true";
+    }
+
     [Test]
     public void TestMoveLeft() {
         // Arrange
-        player.SetMoveRight(true);
-        player.Move();
-        player.SetMoveRight(false);
         float oldX = player.GetPosition().X;
+        moveEvent.Message = "MOVE_LEFT";
         // Act
-        player.SetMoveLeft(true);
+        player.ProcessEvent(moveEvent);
         player.Move();
-        player.SetMoveLeft(false);
         // Assert
         Assert.True(player.GetPosition().X == (oldX - 0.01f));
     }
@@ -42,37 +48,37 @@ public class TestsPlayer {
     [Test]
     public void TestMoveRight() {
         float oldX = player.GetPosition().X;
-        player.SetMoveRight(true);
+        moveEvent.Message = "MOVE_RIGHT";
 
+        player.ProcessEvent(moveEvent);
         player.Move();
-        player.SetMoveRight(false);
 
         Assert.True(player.GetPosition().X == (oldX + 0.01f));
     }
 
     [Test]
     public void TestMoveLeftBoundary() {
-        player.SetMoveLeft(true);
+        moveEvent.Message = "MOVE_LEFT";
+        player.ProcessEvent(moveEvent);
+
         while (player.GetPosition().X > 0.0f) {
             player.Move();
         }
 
         player.Move();
-        player.SetMoveLeft(false);
-
         Assert.True(player.GetPosition().X == 0.0f);
     }
 
     [Test]
     public void TestMoveRightBoundary() {
-        player.SetMoveRight(true);
+        moveEvent.Message = "MOVE_RIGHT";
+        player.ProcessEvent(moveEvent);
+
         while (player.GetPosition().X < 0.9f) {
             player.Move();
         }
 
         player.Move();
-        player.SetMoveRight(false);
-
         Assert.True(player.GetPosition().X == 0.9f);
     }
 }

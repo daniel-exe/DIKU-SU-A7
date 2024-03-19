@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
@@ -9,10 +11,12 @@ using DIKUArcade.GUI;
 using DIKUArcade.Input;
 using DIKUArcade.Events;
 using DIKUArcade.Physics;
+using DIKUArcade.Utilities;
 using Galaga.MovementStrategy;
 
+
 namespace Galaga;
-public class Game : DIKUGame, IGameEventProcessor, IMovementStrategy {
+public class Game : DIKUGame, IGameEventProcessor {
     private Player player;
     private GameEventBus eventBus;
     private EntityContainer<Enemy> enemies;
@@ -21,6 +25,8 @@ public class Game : DIKUGame, IGameEventProcessor, IMovementStrategy {
     private AnimationContainer enemyExplosions;
     private List<Image> explosionStrides;
     private const int EXPLOSION_LENGTH_MS = 500;
+
+    private IMovementStrategy moveStrategy;
 
     public Game(WindowArgs windowArgs) : base(windowArgs) {
         player = new Player(
@@ -41,10 +47,10 @@ public class Game : DIKUGame, IGameEventProcessor, IMovementStrategy {
         for (int i = 0; i < numEnemies; i++) {
             enemies.AddEntity(new Enemy(
                 new DynamicShape(new Vec2F(0.1f + (float)i * 0.1f, 0.9f), new Vec2F(0.1f, 0.1f)),
-                new ImageStride(80, images),
-                new ZigZagDown()));
+                new ImageStride(80, images)));
         }
 
+        moveStrategy = getRndMovementStrat();
         playerShots = new EntityContainer<PlayerShot>();
         playerShotImage = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
 
@@ -53,19 +59,31 @@ public class Game : DIKUGame, IGameEventProcessor, IMovementStrategy {
             Path.Combine("Assets", "Images", "Explosion.png"));
     }
 
-    public override void Render(){
+    public override void Render() {
         player.Render();
         enemies.RenderEntities();
         playerShots.RenderEntities();
         enemyExplosions.RenderAnimations();
     }
 
-    public override void Update(){
+    public override void Update() {
         window.PollEvents();
         eventBus.ProcessEventsSequentially();
         player.Move();
         IterateShots();
-        MoveEnemies(enemies);
+        moveStrategy.MoveEnemies(enemies);
+    }
+
+    // Randomly selects a movement strategy by using reflection
+    private IMovementStrategy getRndMovementStrat() {
+        var moveStrategyList = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(p => typeof(IMovementStrategy).IsAssignableFrom(p) && p.IsClass)
+            .ToList();
+
+        int LengthOfList = moveStrategyList.Count();
+        int rndIndex = RandomGenerator.Generator.Next(0, LengthOfList);
+        return (IMovementStrategy)Activator.CreateInstance(moveStrategyList[rndIndex]);
     }
 
     private void KeyPress(KeyboardKey key) {
@@ -169,15 +187,4 @@ public class Game : DIKUGame, IGameEventProcessor, IMovementStrategy {
         var explosionStride = new ImageStride(EXPLOSION_LENGTH_MS/8, explosionStrides);
         enemyExplosions.AddAnimation(explosionShape, explotionLength, explosionStride);
     }
-
-    public void MoveEnemy (Enemy enemy) {
-        enemy.MoveEnemy(enemy);
-    }
-
-    public void MoveEnemies (EntityContainer<Enemy> enemies) {
-        foreach (Enemy enemy in enemies) {
-            enemy.MoveEnemy(enemy);
-        }
-    }
-
 }

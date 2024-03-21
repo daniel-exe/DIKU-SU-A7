@@ -2,20 +2,34 @@ using DIKUArcade.State;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using DIKUArcade.Input;
+using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using DIKUArcade;
+using DIKUArcade.GUI;
+using DIKUArcade.Events;
+using DIKUArcade.Physics;
+using DIKUArcade.Utilities;
+using Squadron;
+using MovementStrategy;
+
+
 namespace Galaga.GalagaStates {
     public class GamePaused : IGameState {
         private static GamePaused instance = null;
         // Background
         private Image image = new Image(Path.Combine("Assets", "galaga.png"));
         private StationaryShape shape = new StationaryShape(0f, 0f, 1f, 1f);
-        private Entity backGroundImage= new Entity(shape, image);
+        private Entity backGroundImage = new Entity(shape, image);
         // Buttons
         private Vec2F continuePosition = new Vec2F(0.4f, 0.3f);
         private Vec2F continueExtent = new Vec2F(0.2f, 0.1f);
         private Vec2F mainMenuPosition = new Vec2F(0.4f, 0.45f);
         private Vec2F mainMenuExtent = new Vec2F(0.2f, 0.1f);
         private Text continueButton = new Text("- Continue", continuePosition, continueExtent);
-        private Text mainMenuButton = Text("- Main Menu", mainMenuPosition, mainMenuExtent);
+        private Text mainMenuButton = new Text("- Main Menu", mainMenuPosition, mainMenuExtent);
         private Text[] menuButtons = new List<Text> { continueButton, mainMenuButton };
         // Button attributes
         private Vec3I greenActive = new Vec3I(0, 204, 0);

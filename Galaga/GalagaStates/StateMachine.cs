@@ -1,6 +1,8 @@
 using DIKUArcade.Events;
 using DIKUArcade.State;
+using DIKUArcade.Input;
 
+// FIX singleton?
 // Handles GameStateEvents
 namespace Galaga.GalagaStates {
     public class StateMachine : IGameEventProcessor {
@@ -28,7 +30,7 @@ namespace Galaga.GalagaStates {
 
         public void ProcessEvent(GameEvent gameEvent) {
             if (gameEvent.EventType == GameEventType.GameStateEvent) {
-                switch (gameEvent.Message) {
+                switch (gameEvent.StringArg1) {
                     case "GAME_RUNNING":
                         SwitchState(GameStateType.GameRunning);
                         break;

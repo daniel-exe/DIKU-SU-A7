@@ -1,6 +1,10 @@
 using DIKUArcade.State;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
+using DIKUArcade.Input;
+using DIKUArcade.Math;
+
+
 
 namespace Galaga.GalagaStates {
     public class MainMenu : IGameState {
@@ -15,7 +19,7 @@ namespace Galaga.GalagaStates {
         private Vec2F quitPosition = new Vec2F(0.4f, 0.45f);
         private Vec2F quitExtent = new Vec2F(0.2f, 0.1f);
         private Text newGame = new Text("- New Game", newGamePosition, newGameExtent);
-        private Text quit = Text("- Quit", quitPosition, quitExtent);
+        private Text quit = new Text("- Quit", quitPosition, quitExtent);
         private Text[] menuButtons = new List<Text> { newGame, quit };
         // Button attributes
         private Vec3I greenActive = new Vec3I(0, 204, 0);

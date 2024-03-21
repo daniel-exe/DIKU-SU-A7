@@ -34,7 +34,7 @@ namespace Galaga.GalagaStates {
         // Button attributes
         private Vec3I greenActive;
         private Vec3I grayPassive;
-        private int fontSize = 16;
+        private int fontSize = 30;
         private int activeMenuButton = 0;
         private int maxMenuButtons = 1;
 
@@ -69,7 +69,7 @@ namespace Galaga.GalagaStates {
             mainMenuExtent = new Vec2F(0.2f, 0.1f);
             continueButton = new Text("- Continue", continuePosition, continueExtent);
             mainMenuButton = new Text("- Main Menu", mainMenuPosition, mainMenuExtent);
-            menuButtons = new List<Text> { continueButton, mainMenuButton };
+            menuButtons = new Text[] { continueButton, mainMenuButton };
             // Button attributes
             greenActive = new Vec3I(0, 204, 0);
             grayPassive = new Vec3I(192, 192, 192);

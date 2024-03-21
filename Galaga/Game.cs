@@ -50,7 +50,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 new ImageStride(80, images)));
         }
 
-        moveStrategy = getRndMovementStrat();
+        setRndMovementStrat();
         playerShots = new EntityContainer<PlayerShot>();
         playerShotImage = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
 
@@ -75,7 +75,7 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     // Randomly selects a movement strategy by using reflection
-    private IMovementStrategy getRndMovementStrat() {
+    private void setRndMovementStrat() {
         var moveStrategyList = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(p => typeof(IMovementStrategy).IsAssignableFrom(p) && p.IsClass)
@@ -83,7 +83,7 @@ public class Game : DIKUGame, IGameEventProcessor {
 
         int LengthOfList = moveStrategyList.Count();
         int rndIndex = RandomGenerator.Generator.Next(0, LengthOfList);
-        return (IMovementStrategy)Activator.CreateInstance(moveStrategyList[rndIndex]);
+        moveStrategy = (IMovementStrategy)Activator.CreateInstance(moveStrategyList[rndIndex]);
     }
 
     private void KeyPress(KeyboardKey key) {

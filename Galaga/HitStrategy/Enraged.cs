@@ -17,7 +17,7 @@ public class Enraged : IHitStrategy {
         // }
 
         enemy.Speed *= 2;
-        ImageStride enrageImg = new ImageStride(80, enemy.enemyStridesRed);
+        IBaseImage enrageImg = enemy.enemyStridesRed;
         enemy.Image = enrageImg;
         return false;
     }

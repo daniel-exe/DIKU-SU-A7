@@ -8,7 +8,7 @@ public class ChangeColor : IHitStrategy {
             return true;
         }
 
-        ImageStride enrageImg = new ImageStride(80, enemy.enemyStridesRed);
+        IBaseImage enrageImg = enemy.enemyStridesRed;
         enemy.Image = enrageImg;
         return false;
     }

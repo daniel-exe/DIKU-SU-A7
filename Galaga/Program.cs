@@ -1,6 +1,5 @@
 namespace Galaga;
 
-using System;
 using DIKUArcade.GUI;
 
 class Program {

@@ -7,14 +7,15 @@ using System.Linq;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Utilities;
-using Galaga.HitStrategy;
+using HitStrategy;
 
 public class Enemy : Entity {
 
     private int maxHitpoints = 10; //Maybe constant.
     private int hitpoints;
 
-    public List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
+    public IBaseImage enemyStridesRed;
+    // public List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
 
     public List<Image> enemyStridesGreen = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "GreenMonster.png"));
     private int speed;
@@ -46,9 +47,10 @@ public class Enemy : Entity {
         }
     }
 
-    public Enemy(DynamicShape shape, IBaseImage image) : base(shape, image) {
+    public Enemy(DynamicShape shape, IBaseImage image, IBaseImage alternativeEnemyImage) : base(shape, image) {
         this.shape = shape;
         Hitpoints = MaxHitpoints;
+        enemyStridesRed = alternativeEnemyImage;
         getStrategyList();
     }
 

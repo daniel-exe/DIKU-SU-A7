@@ -1,6 +1,17 @@
+using System;
+using System.IO;
+using DIKUArcade.Events;
 using DIKUArcade.State;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
+using DIKUArcade.Math;
+using DIKUArcade;
+using DIKUArcade.GUI;
+using DIKUArcade.Input;
+using DIKUArcade.Physics;
+using System.Collections.Generic;
+using Galaga.Squadron;
+using Galaga.MovementStrategy;
 
 
 // Squadron ting flyttet 
@@ -123,108 +134,108 @@ namespace Galaga.GalagaStates {
                     break;
             }
         }
-    private void KeyPress(KeyboardKey key) {
-        // mangler en til pause
-        switch (key) {
-            case KeyboardKey.Left:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "true",
-                    Message = "MOVE_LEFT", //Could maybe make just ONE registerevent, and then save a new message for each keypress? .
-                });
-                break;
-            case KeyboardKey.Right:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "true",
-                    Message = "MOVE_RIGHT",
-                });
-                break;
-            case KeyboardKey.Up:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "true",
-                    Message = "MOVE_UP",
-                });
-                break;
-            case KeyboardKey.Down:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "true",
-                    Message = "MOVE_DOWN",
-                });
-                break;
+        private void KeyPress(KeyboardKey key) {
+            // mangler en til pause
+            switch (key) {
+                case KeyboardKey.Left:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.PlayerEvent,
+                        StringArg1 = "true",
+                        Message = "MOVE_LEFT", //Could maybe make just ONE registerevent, and then save a new message for each keypress? .
+                    });
+                    break;
+                case KeyboardKey.Right:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.PlayerEvent,
+                        StringArg1 = "true",
+                        Message = "MOVE_RIGHT",
+                    });
+                    break;
+                case KeyboardKey.Up:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.PlayerEvent,
+                        StringArg1 = "true",
+                        Message = "MOVE_UP",
+                    });
+                    break;
+                case KeyboardKey.Down:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.PlayerEvent,
+                        StringArg1 = "true",
+                        Message = "MOVE_DOWN",
+                    });
+                    break;
 
-            //Close window if escape is pressed
-            case KeyboardKey.Escape:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.WindowEvent,
-                    Message = "CLOSE_WINDOW",
-                });
-                break;
+                //Close window if escape is pressed
+                case KeyboardKey.Escape:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.WindowEvent,
+                        Message = "CLOSE_WINDOW",
+                    });
+                    break;
+            }
         }
-    }
-    private void KeyRelease(KeyboardKey key) {
-        // switch on key string and disable the player's move direction
-        switch (key) {
-            case KeyboardKey.Left:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "false",
-                    Message = "MOVE_LEFT",
-                });
-                break;
-            case KeyboardKey.Right:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "false",
-                    Message = "MOVE_RIGHT",
-                });
-                break;
-            case KeyboardKey.Up:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "false",
-                    Message = "MOVE_UP",
-                });
-                break;
-            case KeyboardKey.Down:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "false",
-                    Message = "MOVE_DOWN",
-                });
-                break;
+        private void KeyRelease(KeyboardKey key) {
+            // switch on key string and disable the player's move direction
+            switch (key) {
+                case KeyboardKey.Left:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.PlayerEvent,
+                        StringArg1 = "false",
+                        Message = "MOVE_LEFT",
+                    });
+                    break;
+                case KeyboardKey.Right:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.PlayerEvent,
+                        StringArg1 = "false",
+                        Message = "MOVE_RIGHT",
+                    });
+                    break;
+                case KeyboardKey.Up:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.PlayerEvent,
+                        StringArg1 = "false",
+                        Message = "MOVE_UP",
+                    });
+                    break;
+                case KeyboardKey.Down:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.PlayerEvent,
+                        StringArg1 = "false",
+                        Message = "MOVE_DOWN",
+                    });
+                    break;
 
-            case KeyboardKey.Space:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.InputEvent,
-                    Message = "KEY_SPACE_RELEASE",
-                    ObjectArg1 = playerShotImage
-                });
-                break;
+                case KeyboardKey.Space:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.InputEvent,
+                        Message = "KEY_SPACE_RELEASE",
+                        ObjectArg1 = playerShotImage
+                    });
+                    break;
 
-            // Activate bonus mode!
-            case KeyboardKey.Num_6:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
-                    Message = "KEY_6_RELEASE",
-                });
-                break;
+                // Activate bonus mode!
+                case KeyboardKey.Num_6:
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                        From = this,
+                        EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
+                        Message = "KEY_6_RELEASE",
+                    });
+                    break;
+            }
         }
-    }
-    //Method that creates enemies.
+        //Method that creates enemies.
         public void SpawnSquadron() {
         //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // Beholdt in case vi skal lave uendelig mode
             if (spawnSquad == null) {
@@ -259,43 +270,43 @@ namespace Galaga.GalagaStates {
             int LengthOfList = moveStrategyList.Count();
             int rndIndex = RandomGenerator.Generator.Next(0, LengthOfList);
             moveStrategy = (IMovementStrategy)Activator.CreateInstance(moveStrategyList[rndIndex]);
+        }   
+        public void AddExplosion(Vec2F position, Vec2F extent) {
+            StationaryShape explosionShape = new StationaryShape(position, extent);
+            ImageStride explosionStride = new ImageStride(EXPLOSION_LENGTH_MS / 8, explosionStrides);
+            enemyExplosions.AddAnimation(explosionShape, EXPLOSION_LENGTH_MS, explosionStride);
         }
-    }
-    public void AddExplosion(Vec2F position, Vec2F extent) {
-        StationaryShape explosionShape = new StationaryShape(position, extent);
-        ImageStride explosionStride = new ImageStride(EXPLOSION_LENGTH_MS / 8, explosionStrides);
-        enemyExplosions.AddAnimation(explosionShape, EXPLOSION_LENGTH_MS, explosionStride);
-    }
 
 
-    private void IterateShots() {
-        playerShots.Iterate(shot => {
-            //shot movement speed:
-            shot.Shape.MoveY(0.1f);
+        private void IterateShots() {
+            playerShots.Iterate(shot => {
+                //shot movement speed:
+                shot.Shape.MoveY(0.1f);
 
-            if (shot.Shape.Position.Y > 1) { //Shot is deleted if out of bounds.
-                shot.DeleteEntity();
+                if (shot.Shape.Position.Y > 1) { //Shot is deleted if out of bounds.
+                    shot.DeleteEntity();
 
-            } else {
-                spawnSquad.Enemies.Iterate(enemy => {
-                    //Since the implementation of the AABB algorithm requires dynamic shape as first
-                    //-argument we cast the shots shape to a dynamic shape.
-                    DynamicShape shotDynamicShape = shot.Shape.AsDynamicShape();
-                    //The method AsDynamicShape sets direction to (0,0) as default. So we change it:
-                    shotDynamicShape.ChangeDirection(shot.Direction);
-                    Shape enemyShape = enemy.Shape;
-                    var collide = CollisionDetection.Aabb(shotDynamicShape, enemyShape);
-                    bool collision = collide.Collision;
+                } else {
+                    spawnSquad.Enemies.Iterate(enemy => {
+                        //Since the implementation of the AABB algorithm requires dynamic shape as first
+                        //-argument we cast the shots shape to a dynamic shape.
+                        DynamicShape shotDynamicShape = shot.Shape.AsDynamicShape();
+                        //The method AsDynamicShape sets direction to (0,0) as default. So we change it:
+                        shotDynamicShape.ChangeDirection(shot.Direction);
+                        Shape enemyShape = enemy.Shape;
+                        var collide = CollisionDetection.Aabb(shotDynamicShape, enemyShape);
+                        bool collision = collide.Collision;
 
-                    if (collision) {
-                        shot.DeleteEntity();
-                        if (enemy.GetHit(player.Damage)) {
-                            enemy.DeleteEntity();
-                            AddExplosion(enemyShape.Position, enemyShape.Extent);
+                        if (collision) {
+                            shot.DeleteEntity();
+                            if (enemy.GetHit(player.Damage)) {
+                                enemy.DeleteEntity();
+                                AddExplosion(enemyShape.Position, enemyShape.Extent);
+                            }
                         }
-                    }
-                });
-            }
-        });
+                    });
+                }
+            });
+        }
     }
 }

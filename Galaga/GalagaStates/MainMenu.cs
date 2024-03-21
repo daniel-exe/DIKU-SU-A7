@@ -1,7 +1,10 @@
+using System;
+using System.IO;
 using DIKUArcade.State;
+using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
-
+using DIKUArcade.Math;
 namespace Galaga.GalagaStates {
     public class MainMenu : IGameState {
         private static MainMenu instance = null;

@@ -21,17 +21,7 @@ public class Game : DIKUGame, IGameEventProcessor {
     private GameEventBus eventBus;
     private Player player;
     private Vec2F playerCentre;
-    //Player shots:
-    private EntityContainer<PlayerShot> playerShots;
     private IBaseImage playerShotImage;
-    //Explosions:
-    private AnimationContainer enemyExplosions;
-    private List<Image> explosionStrides;
-    private const int EXPLOSION_LENGTH_MS = 500;
-    //Squadrons:
-    private ISquadron spawnSquad;
-    //MovementStrategy:
-    private IMovementStrategy moveStrategy;
     //Bonus for fun:
     private bool bonus = false;
     //StateMachine:

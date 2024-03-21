@@ -214,7 +214,7 @@ namespace DIKUArcade.Events
                             {
                                 foreach (var eventProcessor in _eventProcessors[eventType]) {
                                     eventProcessor.ProcessEvent(currentEvent);
-                                    
+
                                     if (_breakExecution) loopState.Break();
                                 }
                             }

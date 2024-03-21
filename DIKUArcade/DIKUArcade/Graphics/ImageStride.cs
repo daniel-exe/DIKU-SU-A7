@@ -185,7 +185,7 @@ namespace DIKUArcade.Graphics {
         }
         public void Render(Shape shape, Camera camera) {
             throw new NotImplementedException();
-            
+
         }
     }
 }

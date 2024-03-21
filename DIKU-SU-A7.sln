@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DIKUArcade", "DIKUArcade", "{5E4AF15D-25C5-40F0-BA20-437E7E9D33A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIKUArcade", "DIKUArcade\DIKUArcade\DIKUArcade.csproj", "{A1F4F06B-D2D9-403A-9BBE-9963A7B284A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIKUArcadeUnitTests", "DIKUArcade\DIKUArcadeUnitTests\DIKUArcadeUnitTests.csproj", "{59130610-217E-4383-803F-E86D0BE29C8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDIKUArcade", "DIKUArcade\TestDIKUArcade\TestDIKUArcade.csproj", "{3C5CD69F-31A5-4C3C-9113-1376E0CD60E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Galaga", "Galaga\Galaga.csproj", "{CC365DF7-E94D-4226-8B42-6D3A5C9935B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GalagaTests", "GalagaTests\GalagaTests.csproj", "{032AEB0E-AB0D-4488-8EDA-D562A778A17E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1F4F06B-D2D9-403A-9BBE-9963A7B284A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F4F06B-D2D9-403A-9BBE-9963A7B284A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F4F06B-D2D9-403A-9BBE-9963A7B284A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F4F06B-D2D9-403A-9BBE-9963A7B284A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59130610-217E-4383-803F-E86D0BE29C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59130610-217E-4383-803F-E86D0BE29C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59130610-217E-4383-803F-E86D0BE29C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59130610-217E-4383-803F-E86D0BE29C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C5CD69F-31A5-4C3C-9113-1376E0CD60E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C5CD69F-31A5-4C3C-9113-1376E0CD60E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C5CD69F-31A5-4C3C-9113-1376E0CD60E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C5CD69F-31A5-4C3C-9113-1376E0CD60E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC365DF7-E94D-4226-8B42-6D3A5C9935B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC365DF7-E94D-4226-8B42-6D3A5C9935B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC365DF7-E94D-4226-8B42-6D3A5C9935B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC365DF7-E94D-4226-8B42-6D3A5C9935B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{032AEB0E-AB0D-4488-8EDA-D562A778A17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{032AEB0E-AB0D-4488-8EDA-D562A778A17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{032AEB0E-AB0D-4488-8EDA-D562A778A17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{032AEB0E-AB0D-4488-8EDA-D562A778A17E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A1F4F06B-D2D9-403A-9BBE-9963A7B284A4} = {5E4AF15D-25C5-40F0-BA20-437E7E9D33A4}
+		{59130610-217E-4383-803F-E86D0BE29C8F} = {5E4AF15D-25C5-40F0-BA20-437E7E9D33A4}
+		{3C5CD69F-31A5-4C3C-9113-1376E0CD60E8} = {5E4AF15D-25C5-40F0-BA20-437E7E9D33A4}
+	EndGlobalSection
+EndGlobal

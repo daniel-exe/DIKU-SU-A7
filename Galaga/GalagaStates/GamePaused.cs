@@ -93,6 +93,7 @@ public class GamePaused : IGameState {
                     }
                 }
                 break;
+
             case KeyboardAction.KeyRelease:
                 if (key == KeyboardKey.Enter) {
                     // Continue
@@ -116,6 +117,7 @@ public class GamePaused : IGameState {
                     }
                 }
                 break;
+
             default:
                 break;
         }

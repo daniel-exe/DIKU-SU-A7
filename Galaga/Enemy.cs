@@ -11,12 +11,15 @@ using HitStrategy;
 
 public class Enemy : Entity {
 
+    public float StartPositionX { get; } //til TA: burde dette måske laves med field + properties?
+    public float StartPositionY { get; } //til TA: burde dette måske laves med field + properties?
+
     private int maxHitpoints = 10; //Maybe constant.
     private int hitpoints;
 
     public IBaseImage enemyStridesRed;
-    // public List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
 
+    //Bruges ikke!!!??:
     public List<Image> enemyStridesGreen = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "GreenMonster.png"));
     private int speed;
 
@@ -48,6 +51,8 @@ public class Enemy : Entity {
     }
 
     public Enemy(DynamicShape shape, IBaseImage image, IBaseImage alternativeEnemyImage) : base(shape, image) {
+        StartPositionX = shape.Position.X;
+        StartPositionY = shape.Position.Y;
         this.shape = shape;
         Hitpoints = MaxHitpoints;
         enemyStridesRed = alternativeEnemyImage;

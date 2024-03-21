@@ -1,89 +1,84 @@
-namespace GalagaTests;
-
-using System.IO;
 using NUnit.Framework;
-using Galaga;
+using System.IO;
+using System.Collections.Generic;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using System.Runtime.InteropServices;
+using DIKUArcade;
+using DIKUArcade.GUI;
+using DIKUArcade.Input;
+using DIKUArcade.Events;
+using DIKUArcade.Physics;
+using Galaga;
+
+
+namespace GalagaTests;
 
 public class TestsPlayer {
+    private Player player = new Player(
+        new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
+        new NoImage()
+    );
 
-    [OneTimeSetUp]
-    public void Init() {
-        DIKUArcade.GUI.Window.CreateOpenGLContext();
-    }
-
-    private Player player;
+    private GameEvent moveEvent = new GameEvent();
 
     [SetUp]
     public void Setup() {
-        //Initialize an instance of a player:
-        //Player is initiated with starting position (0.45,0.1).
         player = new Player(
             new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
-            new Image(Path.Combine("../Galaga", "Assets", "Images", "player.png"))
+            new NoImage()
         );
-        //Move player:
 
-        //Moving 35 times up with movespeed = 0.01, moves us from (0.45,0.1) to (0.45,0.45).
-        //Since we have initiated with 0.1 width and 0.1 height. the centre will now be in (0.5,0.5)
-        for (int i = 0; i < 35; i++) {
-            player.SetMoveUp(true); //Simulate 35 keypresses to up.
-        }
+        moveEvent.EventType = GameEventType.PlayerEvent;
+        moveEvent.StringArg1 = "true";
+    }
+
+    [Test]
+    public void TestMoveLeft() {
+        // Arrange
+        float oldX = player.GetPosition().X;
+        moveEvent.Message = "MOVE_LEFT";
+        // Act
+        player.ProcessEvent(moveEvent);
         player.Move();
-        player.SetMoveUp(false); //Simulate key Release.
+        // Assert
+        Assert.True(player.GetPosition().X == (oldX - 0.01f));
     }
 
     [Test]
-    public void PlayerCenterTest() {
-        //Act:
-        Vec2F pos = player.GetPosition();
-        float x = pos.X;
-        float y = pos.Y;
-        //Assert:
-        Assert.That(x, Is.EqualTo(0.5).Within(.0001));
-        Assert.That(y, Is.EqualTo(0.5).Within(.0001));
+    public void TestMoveRight() {
+        float oldX = player.GetPosition().X;
+        moveEvent.Message = "MOVE_RIGHT";
+
+        player.ProcessEvent(moveEvent);
+        player.Move();
+
+        Assert.True(player.GetPosition().X == (oldX + 0.01f));
     }
 
     [Test]
-    public void OutOfBoundsLeftTest() {
-        //Arrange:
-        //We perform left and down movements that would move us out of bounds to the bottom and left side.
-        for (int i = 0; i < 150; i++) {
-            player.SetMoveLeft(true); //Simulate 150 Key Presses to Left.
-            player.SetMoveDown(true); //Simulate 150 Key Presses to Down.
+    public void TestMoveLeftBoundary() {
+        moveEvent.Message = "MOVE_LEFT";
+        player.ProcessEvent(moveEvent);
+
+        while (player.GetPosition().X > 0.0f) {
             player.Move();
-            player.SetMoveLeft(false); //Simulate key Release.
-            player.SetMoveDown(false); //Simulate key Release.
         }
-        //Act:
-        Vec2F pos = player.GetPosition();
-        float x = pos.X;
-        float y = pos.Y;
-        //Assert:
-        Assert.That(x, Is.EqualTo(0).Within(.0001));
-        Assert.That(y, Is.EqualTo(0).Within(.0001));
+
+        player.Move();
+        Assert.True(player.GetPosition().X == 0.0f);
     }
 
     [Test]
-    public void OutOfBoundsMaxTest() {
-        //Arrange:
-        //We perform right and up movements that would move us out of bounds to the top and right side.
-        for (int i = 0; i < 150; i++) {
-            player.SetMoveRight(true); //Simulate 150 Key Presses to Right.
-            player.SetMoveUp(true); //Simulate 150 Key Presses to Up.
+    public void TestMoveRightBoundary() {
+        moveEvent.Message = "MOVE_RIGHT";
+        player.ProcessEvent(moveEvent);
+
+        while (player.GetPosition().X < 0.9f) {
             player.Move();
-            player.SetMoveRight(false); //Simulate Key Release.
-            player.SetMoveUp(false); //Simulate Key Release.
         }
-        //Act:
-        Vec2F pos = player.GetPosition();
-        float x = pos.X;
-        float y = pos.Y;
-        //Assert:
-        Assert.That(x, Is.EqualTo(1).Within(.0001));
-        Assert.That(y, Is.EqualTo(1).Within(.0001));
+
+        player.Move();
+        Assert.True(player.GetPosition().X == 0.9f);
     }
 }

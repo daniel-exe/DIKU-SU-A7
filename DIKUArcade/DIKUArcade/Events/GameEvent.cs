@@ -29,15 +29,15 @@
         public string Message;
 
         /// <summary>
-        /// Parameter of the message/command, e.g. sound: sound filename or identifier 
+        /// Parameter of the message/command, e.g. sound: sound filename or identifier
         /// </summary>
         public string StringArg1;
-        
+
         /// <summary>
         /// Additional parameter for message/command
         /// </summary>
         public string StringArg2;
-        
+
         /// <summary>
         /// Additional object parameter to pass different types.
         /// </summary>

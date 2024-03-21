@@ -1,18 +1,23 @@
-using System;
-using System.Collections.Generic;
+namespace Galaga;
+
+using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using DIKUArcade;
+using DIKUArcade.GUI;
 using DIKUArcade.Events;
-
-namespace Galaga;
-public class Player : IGameEventProcessor{
+using DIKUArcade.Input;
+using DIKUArcade.Physics;
+using System.Collections.Generic;
+using System;
+public class Player : IGameEventProcessor {
     private Entity entity;
     private DynamicShape shape;
-    private float moveLeft = 0.0f;
-    private float moveRight = 0.0f;
-    private const float MOVEMENT_SPEED = 0.01f;
-
+    //Lav positions !!!!
+    private float moveLeft = 0.0f; //should have get/set properties??
+    private float moveRight = 0.0f; //should have get/set properties??
+    private const float MOVEMENT_SPEED = 0.01f; //Private ??
     public Player(DynamicShape shape, IBaseImage image) {
         entity = new Entity(shape, image);
         this.shape = shape;
@@ -22,53 +27,80 @@ public class Player : IGameEventProcessor{
         entity.RenderEntity();
     }
 
-    public void Move() {
-        shape.Move();
-        if (shape.Position.X > 1.0f - shape.Extent.X) {
-            shape.Position.X = 1.0f - shape.Extent.X;
-        }
-        if (shape.Position.X < 0.0f) {
-            shape.Position.X = 0.0f;
-        }
+    private void UpdateDirection() {
+        shape.Direction.X = moveLeft + moveRight; //Galaga only has left/right movement, so we only update X.
     }
 
-    private void SetMoveLeft(bool val) {
+    public void Move() {
+        // TODO: move the shape and guard against the window borders
+        float posX = GetPosition().X;
+        float nextPos = posX + moveLeft + moveRight;
+        float leftBoarder = 0;
+        float rightBoarder = 1;
+        if (nextPos > leftBoarder && nextPos < rightBoarder) {
+            shape.Move();
+        }
+    }
+    public void SetMoveLeft(bool val) {
         if (val) {
             moveLeft -= MOVEMENT_SPEED;
         } else {
-            moveLeft = 0.0f;
+            moveLeft = 0;
         }
         UpdateDirection();
     }
 
-    private void SetMoveRight(bool val) {
+
+    public void SetMoveRight(bool val) {
         if (val) {
             moveRight += MOVEMENT_SPEED;
         } else {
-            moveRight = 0.0f;
+            moveRight = 0;
         }
         UpdateDirection();
     }
-
-    private void UpdateDirection() {
-        shape.ChangeDirection( new Vec2F((moveLeft + moveRight), shape.Direction.Y) );
+    public Vec2F GetExtent{
+        get {return this.shape.Extent;}
     }
-
+    //Method for getting the players position (the centre coordinates).
     public Vec2F GetPosition() {
-        return entity.Shape.Position;
+        Vec2F pos = shape.Position;
+
+        float playerWidth = shape.Extent.X;
+        float playerHeight = shape.Extent.Y;
+
+        float centreX = pos.X + (playerWidth/2);
+        float centreY = pos.Y + (playerHeight/2);
+        Vec2F centre = new Vec2F(centreX, centreY);
+        return centre;
     }
 
+
+    // lol... :)
+    public void ChangeImage(IBaseImage newImage) {
+        entity = new Entity(shape, newImage);
+    }
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.EventType == GameEventType.PlayerEvent) {
-            bool boolArg = Convert.ToBoolean(gameEvent.StringArg1);
-            switch (gameEvent.Message) {
-                case "MOVE_LEFT":
-                    SetMoveLeft(boolArg);
-                    break;
-                case "MOVE_RIGHT":
-                    SetMoveRight(boolArg);
-                    break;
-            }
+        switch(gameEvent.Message) {  
+            case "MoveLeft" :
+                if (gameEvent.StringArg1 == "True") {
+                    this.SetMoveLeft(true);
+                }
+                else{
+                    this.SetMoveLeft(false);
+                }
+                break;
+            case "MoveRight" :
+                if (gameEvent.StringArg1 == "True") {
+                    SetMoveRight(true);
+                }
+                else{
+                    SetMoveRight(false);
+                }
+                break;
+            default :
+                break;
+            
         }
     }
 }

@@ -184,7 +184,6 @@ public class Game : DIKUGame, IGameEventProcessor {
                 case "CLOSE_WINDOW":
                     window.CloseWindow();
                     break;
-
                 case "KEY_6_RELEASE":
                     player.ChangeImage(
                         new Image(Path.Combine("Assets", "Images", "alternative_player.png"))

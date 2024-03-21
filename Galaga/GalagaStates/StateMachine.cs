@@ -28,13 +28,13 @@ namespace Galaga.GalagaStates {
         public void ProcessEvent(GameEvent gameEvent) {
             if (gameEvent.EventType == GameEventType.GameStateEvent) {
                 switch (gameEvent.Message) {
-                    case "GameRunning":
+                    case "GAME_RUNNING":
                         SwitchState(GameStateType.GameRunning);
                         break;
-                    case "GamePaused":
+                    case "GAME_PAUSED":
                         SwitchState(GameStateType.GamePaused);
                         break;
-                    case "MainMenu":
+                    case "MAIN_MENU":
                         SwitchState(GameStateType.MainMenu);
                         break;
                 }

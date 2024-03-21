@@ -3,33 +3,20 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 
 namespace Galaga.GalagaStates {
-    public class MainMenu : IGameState {
-        private static MainMenu instance = null;
-        // Background
-        private Image image = new Image(Path.Combine("Assets", "Images", "TitleImage.png"));
-        private StationaryShape shape = new StationaryShape(0f, 0f, 1f, 1f);
-        private Entity backGroundImage= new Entity(shape, image);
-        // Buttons
-        private Vec2F newGamePosition = new Vec2F(0.4f, 0.3f);
-        private Vec2F newGameExtent = new Vec2F(0.2f, 0.1f);
-        private Vec2F quitPosition = new Vec2F(0.4f, 0.45f);
-        private Vec2F quitExtent = new Vec2F(0.2f, 0.1f);
-        private Text newGame = new Text("- New Game", newGamePosition, newGameExtent);
-        private Text quit = Text("- Quit", quitPosition, quitExtent);
-        private Text[] menuButtons = new List<Text> { newGame, quit };
-        // Button attributes
-        private Vec3I greenActive = new Vec3I(0, 204, 0);
-        private Vec3I grayPassive = new Vec3I(192, 192, 192);
-        private int fontSize = 16;
-        private int activeMenuButton = 0;
-        private int maxMenuButtons = 1;
+    public class GameRunning : IGameState {
+        private static GameRunning instance = null;
 
-        public static MainMenu GetInstance() {
-            if (MainMenu.instance == null) {
-                MainMenu.instance = new MainMenu();
-                MainMenu.instance.ResetState();
+        private Player player = new Player(
+            new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
+            new Image(Path.Combine("Assets", "Images", "Player.png")));
+
+
+        public static GameRunning GetInstance() {
+            if (GameRunning.instance == null) {
+                GameRunning.instance = new GameRunning();
+                GameRunning.instance.ResetState();
             }
-            return MainMenu.instance;
+            return GameRunning.instance;
         }
 
         public void RenderState() {

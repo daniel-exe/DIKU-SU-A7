@@ -261,38 +261,10 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     //Method for explosions:
-    public void AddExplosion(Vec2F position, Vec2F extent) {
-        StationaryShape explosionShape = new StationaryShape(position, extent);
-        ImageStride explosionStride = new ImageStride(EXPLOSION_LENGTH_MS / 8, explosionStrides);
-        enemyExplosions.AddAnimation(explosionShape, EXPLOSION_LENGTH_MS, explosionStride);
-    }
 
 
-    //Method that creates enemies.
-    public void SpawnSquadron() {
-       //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // HVIS VI SKAL HAVE ENDLES MODE
-        if (spawnSquad == null) {
-            List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
-            List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
 
-            Random rand = new Random();
-            int num = rand.Next(1, 4);
-            switch (num) {
-                case 1:
-                    spawnSquad = new Rectangle();
-                    break;
-                case 2:
-                    spawnSquad = new Square();
-                    break;
-                case 3:
-                    spawnSquad = new Triangle();
-                    break;
-                default:
-                    break;
-            }
-            spawnSquad.CreateEnemies(enemyStridesBlue, enemyStridesRed);
-        }
-    }
+
 
     private void setRndMovementStrat() {
         var moveStrategyList = AppDomain.CurrentDomain.GetAssemblies()

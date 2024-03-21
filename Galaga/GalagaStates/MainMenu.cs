@@ -1,4 +1,7 @@
+using System;
+using System.IO;
 using DIKUArcade.State;
+using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Input;

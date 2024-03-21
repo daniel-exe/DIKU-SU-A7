@@ -1,15 +1,17 @@
+using System;
+using System.IO;
+using DIKUArcade.Events;
 using DIKUArcade.State;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
-using DIKUArcade.Input;
 using DIKUArcade.Math;
-using System.IO;
-using System;
+using DIKUArcade;
+using DIKUArcade.GUI;
+using DIKUArcade.Input;
+using DIKUArcade.Physics;
 using System.Collections.Generic;
 using Galaga.Squadron;
 using Galaga.MovementStrategy;
-
-
 
 
 // Squadron ting flyttet
@@ -134,9 +136,10 @@ namespace Galaga.GalagaStates {
                     });
                     break;
 
+                // Handled by game.
                 // //Close window if escape is pressed
                 // case KeyboardKey.Escape:
-                //     eventBus.RegisterEvent(new GameEvent {
+                //     GalagaBus.GetBus().RegisterEvent(new GameEvent {
                 //         From = this,
                 //         EventType = GameEventType.WindowEvent,
                 //         Message = "CLOSE_WINDOW",
@@ -144,12 +147,11 @@ namespace Galaga.GalagaStates {
                 //     break;
             }
         }
-
         private void KeyRelease(KeyboardKey key) {
             // switch on key string and disable the player's move direction
             switch (key) {
                 case KeyboardKey.Left:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "false",
@@ -157,7 +159,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Right:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "false",
@@ -165,7 +167,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Up:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "false",
@@ -173,7 +175,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Down:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "false",
@@ -182,7 +184,7 @@ namespace Galaga.GalagaStates {
                     break;
 
                 case KeyboardKey.Space:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.InputEvent,
                         Message = "KEY_SPACE_RELEASE",
@@ -192,7 +194,7 @@ namespace Galaga.GalagaStates {
 
                 // Activate bonus mode!
                 case KeyboardKey.Num_6:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
                         Message = "KEY_6_RELEASE",
@@ -237,7 +239,6 @@ namespace Galaga.GalagaStates {
             int rndIndex = RandomGenerator.Generator.Next(0, LengthOfList);
             moveStrategy = (IMovementStrategy)Activator.CreateInstance(moveStrategyList[rndIndex]);
         }
-
         public void AddExplosion(Vec2F position, Vec2F extent) {
             StationaryShape explosionShape = new StationaryShape(position, extent);
             ImageStride explosionStride = new ImageStride(EXPLOSION_LENGTH_MS / 8, explosionStrides);

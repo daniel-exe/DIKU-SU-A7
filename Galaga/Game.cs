@@ -33,11 +33,14 @@ public class Game : DIKUGame, IGameEventProcessor {
     private IMovementStrategy moveStrategy;
     //Bonus for fun:
     private bool bonus = false;
+    //StateMachine:
+    // private StateMachine stateMachine = new StateMachine blabla
+
     public Game(WindowArgs windowArgs) : base(windowArgs) {
         //Player:
         player = new Player(
             new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
-            new Image(Path.Combine("Assets", "Images", "player.png"))
+            new Image(Path.Combine("Assets", "Images", "Player.png"))
         );
 
         //Evenbus:
@@ -81,6 +84,7 @@ public class Game : DIKUGame, IGameEventProcessor {
         player.Move();
         IterateShots();
         moveStrategy.MoveEnemies(spawnSquad.Enemies);
+        // Something like stateMachine.ActiveState.UpdateState();
     }
 
     private void KeyPress(KeyboardKey key) {
@@ -184,6 +188,7 @@ public class Game : DIKUGame, IGameEventProcessor {
         }
     }
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
+        // Something like stateMachine.ActiveState.HandleKeyEvent(action, key);
         if (action == KeyboardAction.KeyRelease) {
             KeyRelease(key);
         } else if (action == KeyboardAction.KeyPress) {

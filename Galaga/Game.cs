@@ -254,7 +254,8 @@ public class Game : DIKUGame, IGameEventProcessor {
 
     //Method that creates enemies.
     public void SpawnSquadron() {
-        if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) {
+       //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // HVIS VI SKAL HAVE ENDLES MODE
+        if (spawnSquad == null) {
             List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
             List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
 

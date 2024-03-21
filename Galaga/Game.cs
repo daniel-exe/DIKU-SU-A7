@@ -15,6 +15,7 @@ using DIKUArcade.Input;
 using DIKUArcade.Utilities;
 using Squadron;
 using MovementStrategy;
+using Galaga.GalagaStates;
 
 public class Game : DIKUGame, IGameEventProcessor {
     private GameEventBus eventBus;
@@ -35,8 +36,9 @@ public class Game : DIKUGame, IGameEventProcessor {
     private bool bonus = false;
     //StateMachine:
     // private StateMachine stateMachine = new StateMachine blabla
-
+    private StateMachine stateMachine;
     public Game(WindowArgs windowArgs) : base(windowArgs) {
+        stateMachine = new StateMachine();
         //Player:
         player = new Player(
             new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
@@ -70,22 +72,16 @@ public class Game : DIKUGame, IGameEventProcessor {
 
         //Movement Strategy:
     }
-        public override void Render() {
-        // something like stateMachine.ActiveState.RenderState();
-
-        }
+    public override void Render() {
+        stateMachine.ActiveState.RenderState();
+    }
     public override void Update() {
         window.PollEvents();
-        // probably stateMachine.ActiveState.UpdateState();
-        // Something like  GalagaBus.GetBus().ProcessEvents();
+        stateMachine.ActiveState.UpdateState();
+        GalagaBus.GetBus().ProcessEvents();
     }
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
-        // Something like stateMachine.ActiveState.HandleKeyEvent(action, key);
-        if (action == KeyboardAction.KeyRelease) {
-            KeyRelease(key);
-        } else if (action == KeyboardAction.KeyPress) {
-            KeyPress(key);
-        }
+        stateMachine.ActiveState.HandleKeyEvent(action, key);
     }
 
     public void ProcessEvent(GameEvent gameEvent) {

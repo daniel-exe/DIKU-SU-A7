@@ -107,7 +107,7 @@ namespace Galaga.GalagaStates {
                                     Message = "CHANGE_STATE",
                                     StringArg1 = "GAME_RUNNING"
                                 }
-                            )
+                            );
                         // Quit
                         } else if (activeMenuButton == 1) {
                             GalagaBus.GetBus().RegisterEvent (
@@ -115,7 +115,7 @@ namespace Galaga.GalagaStates {
                                     EventType = GameEventType.WindowEvent,
                                     Message = "CLOSE_WINDOW",
                                 }
-                            )
+                            );
                         }
                     }
                     break;

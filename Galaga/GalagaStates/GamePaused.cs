@@ -1,7 +1,7 @@
 using DIKUArcade.State;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
-
+using DIKUArcade.Math;
 namespace Galaga.GalagaStates {
     public class GamePaused : IGameState {
         private static GamePaused instance = null;
@@ -54,7 +54,7 @@ namespace Galaga.GalagaStates {
             }
             // Render
             backGroundImage.Render();
-            foreach (button in menuButtons) {
+            foreach (Text button in menuButtons) {
                 menuButtons[i].RenderText();
             }
         }
@@ -82,7 +82,7 @@ namespace Galaga.GalagaStates {
                                     Message = "CHANGE_STATE",
                                     StringArg1 = "GAME_RUNNING"
                                 }
-                            )
+                            );
                         // Main Menu
                         } else if (activeMenuButton == 1) {
                             GalagaBus.GetBus().RegisterEvent (
@@ -91,7 +91,7 @@ namespace Galaga.GalagaStates {
                                     Message = "CHANGE_STATE",
                                     Message = "MAIN_MENU",
                                 }
-                            )
+                            );
                         }
                     }
                     break;

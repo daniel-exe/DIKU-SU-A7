@@ -226,9 +226,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                     DynamicShape shotDynamicShape = shot.Shape.AsDynamicShape();
                     //The method AsDynamicShape sets direction to (0,0) as default. So we change it:
                     shotDynamicShape.ChangeDirection(shot.Direction);
-
                     Shape enemyShape = enemy.Shape;
-
                     var collide = CollisionDetection.Aabb(shotDynamicShape, enemyShape);
                     bool collision = collide.Collision;
 

@@ -1,6 +1,7 @@
 namespace Galaga;
 
 using System.IO;
+using System;
 using System.Collections.Generic;
 using DIKUArcade;
 using DIKUArcade.GUI;
@@ -65,8 +66,8 @@ public class Game : DIKUGame, IGameEventProcessor {
         // //         new DynamicShape(new Vec2F(0.1f + (float) i * 0.1f, 0.9f), new Vec2F(0.1f, 0.1f)),
         // //         new ImageStride(80, enemyStridesBlue)));
         // // }
-        SpawnSquadron();
-        enemies = spawnSquad.Enemies;
+        //SpawnSquadron();
+        //enemies = spawnSquad.Enemies;
 
         //Playershots:
         playerShots = new EntityContainer<PlayerShot>();
@@ -79,7 +80,7 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
     public override void Render() {
         player.Render();
-        enemies.RenderEntities(); //maybe remove?
+        SpawnSquadron();
         playerShots.RenderEntities();
         enemyExplosions.RenderAnimations();
     }
@@ -236,7 +237,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 shot.DeleteEntity();
 
             } else {
-                enemies.Iterate(enemy => {
+                spawnSquad.Enemies.Iterate(enemy => {
                     //Since the implementation of the AABB algorithm requires dynamic shape as first
                     //-argument we cast the shots shape to a dynamic shape.
                     DynamicShape shotDynamicShape = shot.Shape.AsDynamicShape();
@@ -270,26 +271,27 @@ public class Game : DIKUGame, IGameEventProcessor {
 
     //Method that creates enemies.
     public void SpawnSquadron() {
-        // if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) {
-        List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
-        List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
+        if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) {
+            List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
+            List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
 
-        // Random rand = new Random();
-        // int num = rand.Next(1, 4);
-        int num = RandomGenerator.Generator.Next(1, 4);
-        switch (num) {
-            case 1:
-                spawnSquad = new Rectangle();
-                break;
-            case 2:
-                spawnSquad = new Square();
-                break;
-            case 3:
-                spawnSquad = new Triangle();
-                break;
-            default:
-                break;
+            Random rand = new Random();
+            int num = rand.Next(1, 4);
+            switch (num) {
+                case 1:
+                    spawnSquad = new Rectangle();
+                    break;
+                case 2:
+                    spawnSquad = new Square();
+                    break;
+                case 3:
+                    spawnSquad = new Triangle();
+                    break;
+                default:
+                    break;
+            }
+            spawnSquad.CreateEnemies(enemyStridesBlue, enemyStridesRed);
         }
-        spawnSquad.CreateEnemies(enemyStridesBlue, enemyStridesRed);
+        spawnSquad.Enemies.RenderEntities();
     }
 }

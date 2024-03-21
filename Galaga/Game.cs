@@ -18,24 +18,17 @@ public class Game : DIKUGame, IGameEventProcessor {
     private GameEventBus eventBus;
     private Player player;
     private Vec2F playerCentre;
-
-    //Enemies:
-    private EntityContainer<Enemy> enemies;
-
     //Player shots:
     private EntityContainer<PlayerShot> playerShots;
     private IBaseImage playerShotImage;
-
     //Explosions:
     private AnimationContainer enemyExplosions;
     private List<Image> explosionStrides;
     private const int EXPLOSION_LENGTH_MS = 500;
-
     //Squadrons:
     private ISquadron spawnSquad;
     //Bonus for fun:
     private bool bonus = false;
-
     public Game(WindowArgs windowArgs) : base(windowArgs) {
         //Game:
         eventBus = new GameEventBus();
@@ -59,22 +52,13 @@ public class Game : DIKUGame, IGameEventProcessor {
         //Enemies:
         List<Image> enemyStridesBlue = ImageStride.CreateStrides
                                 (4, Path.Combine("Assets", "Images", "BlueMonster.png"));
-        const int numEnemies = 8;
-        // enemies = new EntityContainer<Enemy>(numEnemies);
-        // // for (int i = 0; i < numEnemies; i++) {
-        // //     enemies.AddEntity(new Enemy(
-        // //         new DynamicShape(new Vec2F(0.1f + (float) i * 0.1f, 0.9f), new Vec2F(0.1f, 0.1f)),
-        // //         new ImageStride(80, enemyStridesBlue)));
-        // // }
-        //SpawnSquadron();
-        //enemies = spawnSquad.Enemies;
 
         //Playershots:
         playerShots = new EntityContainer<PlayerShot>();
         playerShotImage = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
 
         //Explosions:
-        enemyExplosions = new AnimationContainer(numEnemies);
+        enemyExplosions = new AnimationContainer(8);
         explosionStrides = ImageStride.CreateStrides(8,
             Path.Combine("Assets", "Images", "Explosion.png"));
     }

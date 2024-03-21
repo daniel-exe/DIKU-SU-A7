@@ -103,7 +103,7 @@ namespace Galaga.GalagaStates {
             // mangler en til pause
             switch (key) {
                 case KeyboardKey.Left:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "true",
@@ -112,7 +112,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Right:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "true",
@@ -120,7 +120,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Up:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "true",
@@ -128,7 +128,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Down:
-                    eventBus.RegisterEvent(new GameEvent {
+                    GalagaBus.RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "true",

@@ -145,8 +145,8 @@ namespace DIKUArcade.GUI {
         #region WINDOW_RESIZE
 
         private void DefaultResizeHandler(ResizeEventArgs args) {
-            if (!Resizable) { 
-                return; 
+            if (!Resizable) {
+                return;
             }
 
             // GL.Viewport(0, 0, window.Size.X, window.Size.Y);
@@ -168,7 +168,7 @@ namespace DIKUArcade.GUI {
 
         #region KEY_EVENT_HANDLERS
 
-        
+
 
         private void DefaultKeyEventHandler(KeyboardKeyEventArgs args) {
             switch(args.Key) {

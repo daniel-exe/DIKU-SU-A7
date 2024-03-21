@@ -34,7 +34,13 @@ public class Game : DIKUGame, IGameEventProcessor {
     //Bonus for fun:
     private bool bonus = false;
     public Game(WindowArgs windowArgs) : base(windowArgs) {
-        //Game:
+        //Player:
+        player = new Player(
+            new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
+            new Image(Path.Combine("Assets", "Images", "player.png"))
+        );
+
+        //Evenbus:
         eventBus = new GameEventBus();
         eventBus.InitializeEventBus(new List<GameEventType> {
             GameEventType.InputEvent,
@@ -44,21 +50,11 @@ public class Game : DIKUGame, IGameEventProcessor {
 
         window.SetKeyEventHandler(KeyHandler);
         eventBus.Subscribe(GameEventType.InputEvent, this);
-        eventBus.Subscribe(GameEventType.PlayerEvent, this); //Maybe subscribe to player
         eventBus.Subscribe(GameEventType.WindowEvent, this);
-
-        //Player:
-        player = new Player(
-            new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
-            new Image(Path.Combine("Assets", "Images", "player.png"))
-        );
+        eventBus.Subscribe(GameEventType.PlayerEvent, player); //Subscribed to player
 
         //Enemies:
-        //FIX kan slettes?
-        // List<Image> enemyStridesBlue = ImageStride.CreateStrides
-        //                         (4, Path.Combine("Assets", "Images", "BlueMonster.png"));
-
-        SpawnSquadron(); //FIX maybe
+        SpawnSquadron();
 
         //Playershots:
         playerShots = new EntityContainer<PlayerShot>();
@@ -70,7 +66,7 @@ public class Game : DIKUGame, IGameEventProcessor {
             Path.Combine("Assets", "Images", "Explosion.png"));
 
         //Movement Strategy:
-        setRndMovementStrat(); //FIX maybe
+        setRndMovementStrat();
     }
     public override void Render() {
         player.Render();
@@ -80,21 +76,20 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
 
     public override void Update() {
-        //window.PollEvents(); //Fix de bruger det her??? er det når man subscriber til player?
+        window.PollEvents();
         eventBus.ProcessEventsSequentially();
         player.Move();
         IterateShots();
-        moveStrategy.MoveEnemies(spawnSquad.Enemies); //FIX enemies need rename
+        moveStrategy.MoveEnemies(spawnSquad.Enemies);
     }
 
     private void KeyPress(KeyboardKey key) {
-        //switch on key string and set the player's move direction
         switch (key) {
             case KeyboardKey.Left:
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
-                    ObjectArg1 = true,
+                    StringArg1 = "true",
                     Message = "MOVE_LEFT", //Could maybe make just ONE registerevent, and then save a new message for each keypress? .
                 });
                 break;
@@ -102,7 +97,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
-                    ObjectArg1 = true,
+                    StringArg1 = "true",
                     Message = "MOVE_RIGHT",
                 });
                 break;
@@ -110,7 +105,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
-                    ObjectArg1 = true,
+                    StringArg1 = "true",
                     Message = "MOVE_UP",
                 });
                 break;
@@ -118,7 +113,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
-                    ObjectArg1 = true,
+                    StringArg1 = "true",
                     Message = "MOVE_DOWN",
                 });
                 break;
@@ -140,7 +135,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
-                    ObjectArg1 = false,
+                    StringArg1 = "false",
                     Message = "MOVE_LEFT",
                 });
                 break;
@@ -148,7 +143,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
-                    ObjectArg1 = false,
+                    StringArg1 = "false",
                     Message = "MOVE_RIGHT",
                 });
                 break;
@@ -156,7 +151,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
-                    ObjectArg1 = false,
+                    StringArg1 = "false",
                     Message = "MOVE_UP",
                 });
                 break;
@@ -164,7 +159,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
-                    ObjectArg1 = false,
+                    StringArg1 = "false",
                     Message = "MOVE_DOWN",
                 });
                 break;
@@ -172,7 +167,7 @@ public class Game : DIKUGame, IGameEventProcessor {
             case KeyboardKey.Space:
                 eventBus.RegisterEvent(new GameEvent {
                     From = this,
-                    EventType = GameEventType.InputEvent, //FIX Is this the right type of event??
+                    EventType = GameEventType.InputEvent,
                     Message = "KEY_SPACE_RELEASE",
                     ObjectArg1 = playerShotImage
                 });
@@ -212,14 +207,12 @@ public class Game : DIKUGame, IGameEventProcessor {
                     bonus = true;
                     break;
             }
-        } else if (gameEvent.EventType == GameEventType.PlayerEvent) { //Maybe dont need this check and instead just run switch cases.
-            player.ProcessEvent(gameEvent); //FIX Burde slettes, og subscribe til player istedet.
 
         } else if (gameEvent.EventType == GameEventType.InputEvent) {
 
             switch (gameEvent.Message) {
                 case "KEY_SPACE_RELEASE":
-                    playerCentre = player.GetPosition();
+                    playerCentre = player.GetCentrum();
                     PlayerShot shot = new PlayerShot(playerCentre, playerShotImage);
                     if (bonus) {
                         shot.Extent = new Vec2F(0.020f, 0.042f);

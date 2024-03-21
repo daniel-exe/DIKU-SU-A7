@@ -1,5 +1,5 @@
 namespace Galaga;
-
+using System;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
@@ -31,16 +31,25 @@ public class Player : IGameEventProcessor {
     }
 
     public void Move() {
-        //Move the shape and guard against the window borders
-        float posX = GetPosition().X;
+        Vec2F pos = shape.Position;
+        float posX = pos.X;
+        float posY = pos.Y;
+        float playerWidth = shape.Extent.X;
+        float playerHeight = shape.Extent.Y;
+
+        //Defining the borders:
+        float leftBorder = 0;
+        float bottomBorder = 0;
+        //Since player position is calcualted from bottom left corner of the entity
+        //we have to subtract the player width and height from the right and bottom borders.
+        float rightBorder = 1 - playerWidth;
+        float topBorder = 1 - playerHeight;
+
+        //Calculating the next position:
         float nextPosX = posX + moveLeft + moveRight;
-        float posY = GetPosition().Y;
         float nextPosY = posY + moveUp + moveDown;
-        float leftBoarder = 0;
-        float rightBoarder = 1;
-        float bottomBoarder = 0;
-        float topBoarder = 1;
-        if ((nextPosX > leftBoarder && nextPosX < rightBoarder) && (nextPosY > bottomBoarder && nextPosY < topBoarder)) {
+        //Checking if next position is out of bounds:
+        if ((nextPosX > leftBorder && nextPosX < rightBorder) && (nextPosY > bottomBorder && nextPosY < topBorder)) {
             shape.Move();
         }
     }
@@ -48,7 +57,6 @@ public class Player : IGameEventProcessor {
         if (val) {
             moveLeft -= MOVEMENT_SPEED;
         } else {
-            moveLeft = 0;
             moveLeft = 0;
         }
         UpdateDirection();
@@ -83,7 +91,7 @@ public class Player : IGameEventProcessor {
     }
 
     //Method for getting the players position (the centre coordinates).
-    public Vec2F GetPosition() { //maybe make this a method of Entity? since used in player AND enemy?
+    public Vec2F GetCentrum() { //maybe make this a method of Entity? since used in player AND enemy?
         Vec2F pos = shape.Position;
         float playerWidth = shape.Extent.X;
         float playerHeight = shape.Extent.Y;
@@ -100,38 +108,22 @@ public class Player : IGameEventProcessor {
 
     public void ProcessEvent(GameEvent gameEvent) {
         if (gameEvent.EventType == GameEventType.PlayerEvent) { //Maybe dont need this check and instead just run switch cases.
+            bool boolArg = Convert.ToBoolean(gameEvent.StringArg1);
             switch (gameEvent.Message) {
-                case "KEY_LEFT_PRESS":
-                    this.SetMoveLeft(true);
+                case "MOVE_LEFT":
+                    this.SetMoveLeft(boolArg);
                     break;
 
-                case "KEY_RIGHT_PRESS":
-                    this.SetMoveRight(true);
+                case "MOVE_RIGHT":
+                    this.SetMoveRight(boolArg);
                     break;
 
-                case "KEY_UP_PRESS":
-                    this.SetMoveUp(true);
+                case "MOVE_UP":
+                    this.SetMoveUp(boolArg);
                     break;
 
-                case "KEY_DOWN_PRESS":
-                    this.SetMoveDown(true);
-                    break;
-
-                //Releases:
-                case "KEY_LEFT_RELEASE":
-                    this.SetMoveLeft(false);
-                    break;
-
-                case "KEY_RIGHT_RELEASE":
-                    this.SetMoveRight(false);
-                    break;
-
-                case "KEY_UP_RELEASE":
-                    this.SetMoveUp(false);
-                    break;
-
-                case "KEY_DOWN_RELEASE":
-                    this.SetMoveDown(false);
+                case "MOVE_DOWN":
+                    this.SetMoveDown(boolArg);
                     break;
             }
         }

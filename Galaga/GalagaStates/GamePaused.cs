@@ -32,6 +32,16 @@ namespace Galaga.GalagaStates {
             return GamePaused.instance;
         }
 
+        // Only implemented to fulfill contract
+        public void ResetState() {
+            activeMenuButton = 0;
+        }
+
+        // Only implemented to fulfill contract
+        public void UpdateState() {
+            GalagaBus.GetBus().ProcessEventsSequentially();
+        }
+
         public void RenderState() {
             // Set colors
             for (int i = 0; i >= maxMenuButtons; i++) {
@@ -88,16 +98,6 @@ namespace Galaga.GalagaStates {
                 default:
                     break;
             }
-        }
-
-        // Only implemented to fulfill contract
-        public void ResetState() {
-            activeMenuButton = 0;
-        }
-
-        // Only implemented to fulfill contract
-        public void UpdateState() {
-            RenderState();
         }
     }
 }

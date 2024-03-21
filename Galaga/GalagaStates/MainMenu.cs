@@ -32,8 +32,18 @@ namespace Galaga.GalagaStates {
             return MainMenu.instance;
         }
 
+        // Only implemented to fulfill contract
+        public void ResetState() {
+            activeMenuButton = 0;
+        }
+
+        // Only implemented to fulfill contract
+        public void UpdateState() {
+            GalagaBus.GetBus().ProcessEventsSequentially();
+        }
+
         public void RenderState() {
-            // Set colors
+            // Set colors - I think maybe this part should be in UpdateState()?
             for (int i = 0; i >= maxMenuButtons; i++) {
                 if (i == activeMenuButton) {
                     menuButtons[i].SetColor(greenActive);
@@ -87,16 +97,6 @@ namespace Galaga.GalagaStates {
                 default:
                     break;
             }
-        }
-
-        // Only implemented to fulfill contract
-        public void ResetState() {
-            activeMenuButton = 0;
-        }
-
-        // Only implemented to fulfill contract
-        public void UpdateState() {
-            RenderState();
         }
     }
 }

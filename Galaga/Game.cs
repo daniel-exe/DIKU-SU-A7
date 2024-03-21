@@ -69,123 +69,15 @@ public class Game : DIKUGame, IGameEventProcessor {
             Path.Combine("Assets", "Images", "Explosion.png"));
 
         //Movement Strategy:
-        setRndMovementStrat();
     }
-    public override void Render() {
-        player.Render();
-        playerShots.RenderEntities();
-        spawnSquad.Enemies.RenderEntities();
-        enemyExplosions.RenderAnimations();
-    }
+        public override void Render() {
+        // something like stateMachine.ActiveState.RenderState();
 
+        }
     public override void Update() {
         window.PollEvents();
-        eventBus.ProcessEventsSequentially();
-        player.Move();
-        IterateShots();
-        moveStrategy.MoveEnemies(spawnSquad.Enemies);
-        // Something like stateMachine.ActiveState.UpdateState();
-    }
-
-    private void KeyPress(KeyboardKey key) {
-        switch (key) {
-            case KeyboardKey.Left:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "true",
-                    Message = "MOVE_LEFT", //Could maybe make just ONE registerevent, and then save a new message for each keypress? .
-                });
-                break;
-            case KeyboardKey.Right:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "true",
-                    Message = "MOVE_RIGHT",
-                });
-                break;
-            case KeyboardKey.Up:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "true",
-                    Message = "MOVE_UP",
-                });
-                break;
-            case KeyboardKey.Down:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "true",
-                    Message = "MOVE_DOWN",
-                });
-                break;
-
-            //Close window if escape is pressed
-            case KeyboardKey.Escape:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.WindowEvent,
-                    Message = "CLOSE_WINDOW",
-                });
-                break;
-        }
-    }
-    private void KeyRelease(KeyboardKey key) {
-        // switch on key string and disable the player's move direction
-        switch (key) {
-            case KeyboardKey.Left:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "false",
-                    Message = "MOVE_LEFT",
-                });
-                break;
-            case KeyboardKey.Right:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "false",
-                    Message = "MOVE_RIGHT",
-                });
-                break;
-            case KeyboardKey.Up:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "false",
-                    Message = "MOVE_UP",
-                });
-                break;
-            case KeyboardKey.Down:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.PlayerEvent,
-                    StringArg1 = "false",
-                    Message = "MOVE_DOWN",
-                });
-                break;
-
-            case KeyboardKey.Space:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.InputEvent,
-                    Message = "KEY_SPACE_RELEASE",
-                    ObjectArg1 = playerShotImage
-                });
-                break;
-
-            // Activate bonus mode!
-            case KeyboardKey.Num_6:
-                eventBus.RegisterEvent(new GameEvent {
-                    From = this,
-                    EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
-                    Message = "KEY_6_RELEASE",
-                });
-                break;
-        }
+        // probably stateMachine.ActiveState.UpdateState();
+        // Something like  GalagaBus.GetBus().ProcessEvents();
     }
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
         // Something like stateMachine.ActiveState.HandleKeyEvent(action, key);
@@ -226,54 +118,5 @@ public class Game : DIKUGame, IGameEventProcessor {
                     break;
             }
         }
-    }
-
-    //Method for shots:
-    private void IterateShots() {
-        playerShots.Iterate(shot => {
-            //shot movement speed:
-            shot.Shape.MoveY(0.1f);
-
-            if (shot.Shape.Position.Y > 1) { //Shot is deleted if out of bounds.
-                shot.DeleteEntity();
-
-            } else {
-                spawnSquad.Enemies.Iterate(enemy => {
-                    //Since the implementation of the AABB algorithm requires dynamic shape as first
-                    //-argument we cast the shots shape to a dynamic shape.
-                    DynamicShape shotDynamicShape = shot.Shape.AsDynamicShape();
-                    //The method AsDynamicShape sets direction to (0,0) as default. So we change it:
-                    shotDynamicShape.ChangeDirection(shot.Direction);
-                    Shape enemyShape = enemy.Shape;
-                    var collide = CollisionDetection.Aabb(shotDynamicShape, enemyShape);
-                    bool collision = collide.Collision;
-
-                    if (collision) {
-                        shot.DeleteEntity();
-                        if (enemy.GetHit(player.Damage)) {
-                            enemy.DeleteEntity();
-                            AddExplosion(enemyShape.Position, enemyShape.Extent);
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    //Method for explosions:
-
-
-
-
-
-    private void setRndMovementStrat() {
-        var moveStrategyList = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .Where(p => typeof(IMovementStrategy).IsAssignableFrom(p) && p.IsClass)
-            .ToList();
-
-        int LengthOfList = moveStrategyList.Count();
-        int rndIndex = RandomGenerator.Generator.Next(0, LengthOfList);
-        moveStrategy = (IMovementStrategy)Activator.CreateInstance(moveStrategyList[rndIndex]);
     }
 }

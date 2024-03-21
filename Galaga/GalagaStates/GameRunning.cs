@@ -4,8 +4,10 @@ using DIKUArcade.Graphics;
 
 
 // Squadron ting flyttet 
-
-
+// Iterate Shots flyttet 
+// Explosions flyttet
+// Flyttet Key Press
+// Flyttet Key Release
 namespace Galaga.GalagaStates {
     public class GameRunning : IGameState {
         private static GameRunning instance = null;
@@ -13,13 +15,11 @@ namespace Galaga.GalagaStates {
         private Player player;
         private EntityContainer<PlayerShot> playerShots;
         private IBaseImage playerShotImage;
-        // Enemy
-        private EntityContainer<Enemy> enemies;
         private List<Image> images = ImageStride.CreateStrides
             (4, Path.Combine("Assets", "Images", "BlueMonster.png"));
-        private const int numEnemies = 8;
         private IMovementStrategy moveStrategy;
-        // Explosions
+        // Ny enemies
+        private ISquadron spawnSquad;
         private AnimationContainer enemyExplosions;
         private List<Image> explosionStrides;
         private const int EXPLOSION_LENGTH_MS = 500;
@@ -38,7 +38,9 @@ namespace Galaga.GalagaStates {
             player = new Player(
                 new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
                 new Image(Path.Combine("Assets", "Images", "Player.png")));
+            // !!                                                                                     !!  
             // !! skal slettes, men beholdt i tilfælde af det jeg har lavet ikke virker som det skal. !! 
+            // !!                                                                                     !!  
             //enemies = new EntityContainer<Enemy>(numEnemies);
             //for (int i = 0; i < numEnemies; i++) {
             //   enemies.AddEntity(new Enemy(
@@ -50,8 +52,9 @@ namespace Galaga.GalagaStates {
 
             playerShots = new EntityContainer<PlayerShot>();
             playerShotImage = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
-
-            enemyExplosions = new AnimationContainer(numEnemies);
+            // Squadspawn laver et random antal fjender
+            // 8 sat ind, bare fordi
+            enemyExplosions = new AnimationContainer(8);
             explosionStrides = ImageStride.CreateStrides(8,
                 Path.Combine("Assets", "Images", "Explosion.png"));
         }
@@ -61,7 +64,7 @@ namespace Galaga.GalagaStates {
             GalagaBus.GetBus().ProcessEventsSequentially();
             player.Move();
             IterateShots();
-            moveStrategy.MoveEnemies(enemies);
+            moveStrategy.MoveEnemies(spawnSquad.Enemies);
         }
 
         public void RenderState() {
@@ -82,11 +85,6 @@ namespace Galaga.GalagaStates {
                 default:
                     break;
             }
-
-
-
-
-
             switch (action) {
                 case KeyboardAction.KeyPress:
                     if (key = KeyboardKey.Up) {
@@ -125,9 +123,110 @@ namespace Galaga.GalagaStates {
                     break;
             }
         }
+    private void KeyPress(KeyboardKey key) {
+        // mangler en til pause
+        switch (key) {
+            case KeyboardKey.Left:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.PlayerEvent,
+                    StringArg1 = "true",
+                    Message = "MOVE_LEFT", //Could maybe make just ONE registerevent, and then save a new message for each keypress? .
+                });
+                break;
+            case KeyboardKey.Right:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.PlayerEvent,
+                    StringArg1 = "true",
+                    Message = "MOVE_RIGHT",
+                });
+                break;
+            case KeyboardKey.Up:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.PlayerEvent,
+                    StringArg1 = "true",
+                    Message = "MOVE_UP",
+                });
+                break;
+            case KeyboardKey.Down:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.PlayerEvent,
+                    StringArg1 = "true",
+                    Message = "MOVE_DOWN",
+                });
+                break;
+
+            //Close window if escape is pressed
+            case KeyboardKey.Escape:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.WindowEvent,
+                    Message = "CLOSE_WINDOW",
+                });
+                break;
+        }
+    }
+    private void KeyRelease(KeyboardKey key) {
+        // switch on key string and disable the player's move direction
+        switch (key) {
+            case KeyboardKey.Left:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.PlayerEvent,
+                    StringArg1 = "false",
+                    Message = "MOVE_LEFT",
+                });
+                break;
+            case KeyboardKey.Right:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.PlayerEvent,
+                    StringArg1 = "false",
+                    Message = "MOVE_RIGHT",
+                });
+                break;
+            case KeyboardKey.Up:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.PlayerEvent,
+                    StringArg1 = "false",
+                    Message = "MOVE_UP",
+                });
+                break;
+            case KeyboardKey.Down:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.PlayerEvent,
+                    StringArg1 = "false",
+                    Message = "MOVE_DOWN",
+                });
+                break;
+
+            case KeyboardKey.Space:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.InputEvent,
+                    Message = "KEY_SPACE_RELEASE",
+                    ObjectArg1 = playerShotImage
+                });
+                break;
+
+            // Activate bonus mode!
+            case KeyboardKey.Num_6:
+                eventBus.RegisterEvent(new GameEvent {
+                    From = this,
+                    EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
+                    Message = "KEY_6_RELEASE",
+                });
+                break;
+        }
+    }
     //Method that creates enemies.
         public void SpawnSquadron() {
-        //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // HVIS VI SKAL HAVE ENDLES MODE
+        //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // Beholdt in case vi skal lave uendelig mode
             if (spawnSquad == null) {
                 List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
                 List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));

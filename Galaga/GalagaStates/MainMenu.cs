@@ -25,7 +25,7 @@ public class MainMenu : IGameState {
     // Button attributes
     private Vec3I greenActive;
     private Vec3I grayPassive;
-    private int fontSize = 16;
+    private int fontSize = 45;//
     private int activeMenuButton = 0;
     private int maxMenuButtons = 1;
 
@@ -37,86 +37,83 @@ public class MainMenu : IGameState {
         return MainMenu.instance;
     }
 
-    // Only implemented to fulfill contract
-    public void ResetState() {
-        activeMenuButton = 0;
-    }
+        public void ResetState() {
+            activeMenuButton = 0;
+            // DATAAAAA
+            // Background
+            image = new Image(Path.Combine("Assets", "Images", "TitleImage.png"));
+            shape = new StationaryShape(0f, 0f, 1f, 1f);
+            backGroundImage= new Entity(shape, image);
+            // Buttons
+            newGamePosition = new Vec2F(0.4f, 0.45f);//
+            newGameExtent = new Vec2F(0.2f, 0.1f);
+            quitPosition = new Vec2F(0.4f, 0.4f);//
+            quitExtent = new Vec2F(0.2f, 0.1f);
+            newGame = new Text("- New Game", newGamePosition, newGameExtent);
+            quit = new Text("- Quit", quitPosition, quitExtent);
+            greenActive = new Vec3I(0, 204, 0);
+            grayPassive = new Vec3I(192, 192, 192);
+            newGame.SetColor(greenActive);
+            quit.SetColor(grayPassive);
+            newGame.SetFontSize(fontSize);
+            quit.SetFontSize(fontSize);
+            menuButtons = new Text[] { newGame, quit };
+        }
 
-    // Only implemented to fulfill contract
-    public void UpdateState() {
-        GalagaBus.GetBus().ProcessEventsSequentially();
-    }
+        public void UpdateState() {
+            GalagaBus.GetBus().ProcessEventsSequentially();
+        }
 
-    public void RenderState() {
-        // DATAAAAA
-        // Background
-        image = new Image(Path.Combine("Assets", "Images", "TitleImage.png"));
-        shape = new StationaryShape(0f, 0f, 1f, 1f);
-        backGroundImage= new Entity(shape, image);
-        // Buttons
-        newGamePosition = new Vec2F(0.4f, 0.3f);
-        newGameExtent = new Vec2F(0.2f, 0.1f);
-        quitPosition = new Vec2F(0.4f, 0.45f);
-        quitExtent = new Vec2F(0.2f, 0.1f);
-        newGame = new Text("- New Game", newGamePosition, newGameExtent);
-        quit = new Text("- Quit", quitPosition, quitExtent);
-        menuButtons = new Text[] { newGame, quit };
-        // Button attributes
-        greenActive = new Vec3I(0, 204, 0);
-        grayPassive = new Vec3I(192, 192, 192);
-        // Set colors - I think maybe this part should be in UpdateState()?
-        for (int i = 0; i >= maxMenuButtons; i++) {
-            if (i == activeMenuButton) {
-                menuButtons[i].SetColor(greenActive);
-            } else {
-                menuButtons[i].SetColor(grayPassive);
+        public void RenderState() {
+            // Render
+            backGroundImage.Image.Render(backGroundImage.Shape);
+            foreach (Text button in menuButtons) {
+                button.RenderText();
             }
-            menuButtons[i].SetFontSize(fontSize);
         }
-        // Render
-        backGroundImage.Image.Render(backGroundImage.Shape);
-        foreach (Text button in menuButtons) {
-            button.RenderText();
-        }
-    }
 
-    public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
-        switch (action) {
-            case KeyboardAction.KeyPress:
-                if (key == KeyboardKey.Up) {
-                    if (activeMenuButton != 0) {
-                        activeMenuButton --;
+        public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
+            switch (action) {
+                case KeyboardAction.KeyPress:
+                    if (key == KeyboardKey.Up) {
+                        if (activeMenuButton != 0) {
+                            activeMenuButton --;
+                            menuButtons[0].SetColor(greenActive);
+                            menuButtons[1].SetColor(grayPassive);
+                        }
+                    } else if (key == KeyboardKey.Down) {
+                        if (activeMenuButton != maxMenuButtons) {
+                            activeMenuButton ++;
+                            menuButtons[1].SetColor(greenActive);
+                            menuButtons[0].SetColor(grayPassive);
+                        }
                     }
-                } else if (key == KeyboardKey.Down) {
-                    if (activeMenuButton != maxMenuButtons) {
-                        activeMenuButton ++;
+                    break;
+                case KeyboardAction.KeyRelease:
+                    if (key == KeyboardKey.Enter) {
+                        // New Game
+                        if (activeMenuButton == 0) {
+                            GalagaBus.GetBus().RegisterEvent (
+                                new GameEvent {
+                                    EventType = GameEventType.GameStateEvent,
+                                    Message = "CHANGE_STATE",
+                                    StringArg1 = "GAME_RUNNING"
+                                }
+                            );
+                        // Quit
+                        } else if (activeMenuButton == 1) {
+                            GalagaBus.GetBus().RegisterEvent (
+                                new GameEvent {
+                                    EventType = GameEventType.WindowEvent,
+                                    Message = "CLOSE_WINDOW",
+                                }
+                            );
+                        }
                     }
-                }
-                break;
-            case KeyboardAction.KeyRelease:
-                if (key == KeyboardKey.Enter) {
-                    // New Game
-                    if (activeMenuButton == 0) {
-                        GalagaBus.GetBus().RegisterEvent (
-                            new GameEvent {
-                                EventType = GameEventType.GameStateEvent,
-                                Message = "CHANGE_STATE",
-                                StringArg1 = "GAME_RUNNING"
-                            }
-                        );
-                    // Quit
-                    } else if (activeMenuButton == 1) {
-                        GalagaBus.GetBus().RegisterEvent (
-                            new GameEvent {
-                                EventType = GameEventType.WindowEvent,
-                                Message = "CLOSE_WINDOW",
-                            }
-                        );
-                    }
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

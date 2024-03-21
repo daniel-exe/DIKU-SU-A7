@@ -25,7 +25,7 @@ public class GamePaused : IGameState {
     // Button attributes
     private Vec3I greenActive;
     private Vec3I grayPassive;
-    private int fontSize = 16;
+    private int fontSize = 30;
     private int activeMenuButton = 0;
     private int maxMenuButtons = 1;
 

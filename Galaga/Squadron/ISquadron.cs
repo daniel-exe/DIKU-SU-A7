@@ -4,8 +4,6 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using System.Collections.Generic;
 
-
-
 public interface ISquadron {
         EntityContainer<Enemy> Enemies {get;}
         int MaxEnemies {get;}

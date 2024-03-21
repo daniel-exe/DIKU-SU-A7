@@ -8,13 +8,8 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Input;
-using System.IO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using DIKUArcade;
-using DIKUArcade.GUI;
-using DIKUArcade.Events;
 using DIKUArcade.Physics;
 using DIKUArcade.Utilities;
 using Galaga.Squadron;
@@ -255,8 +250,8 @@ public class GameRunning : IGameState {
             .Where(p => typeof(IMovementStrategy).IsAssignableFrom(p) && p.IsClass)
             .ToList();
 
-        int LengthOfList = moveStrategyList.Count();
-        int rndIndex = RandomGenerator.Generator.Next(0, LengthOfList);
+        int lengthOfList = moveStrategyList.Count();
+        int rndIndex = RandomGenerator.Generator.Next(0, lengthOfList);
         moveStrategy = (IMovementStrategy)Activator.CreateInstance(moveStrategyList[rndIndex]);
     }
     public void AddExplosion(Vec2F position, Vec2F extent) {

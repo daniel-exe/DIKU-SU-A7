@@ -1,25 +1,12 @@
 namespace Galaga.GalagaStates;
 
-using System;
 using System.IO;
 using DIKUArcade.State;
 using DIKUArcade.Input;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using DIKUArcade.Input;
-using System.IO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DIKUArcade;
-using DIKUArcade.GUI;
 using DIKUArcade.Events;
-using DIKUArcade.Physics;
-using DIKUArcade.Utilities;
-using Galaga.Squadron;
-using Galaga.MovementStrategy;
-
 
 public class MainMenu : IGameState {
     private static MainMenu instance = null;

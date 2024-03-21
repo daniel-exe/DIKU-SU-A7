@@ -58,19 +58,6 @@ public class Game : DIKUGame, IGameEventProcessor {
         eventBus.Subscribe(GameEventType.WindowEvent, this);
         eventBus.Subscribe(GameEventType.PlayerEvent, player); //Subscribed to player
 
-        //Enemies:
-        SpawnSquadron();
-
-        //Playershots:
-        playerShots = new EntityContainer<PlayerShot>();
-        playerShotImage = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
-
-        //Explosions:
-        enemyExplosions = new AnimationContainer(8);
-        explosionStrides = ImageStride.CreateStrides(8,
-            Path.Combine("Assets", "Images", "Explosion.png"));
-
-        //Movement Strategy:
     }
     public override void Render() {
         stateMachine.ActiveState.RenderState();

@@ -15,28 +15,28 @@ using DIKUArcade.GUI;
 using DIKUArcade.Events;
 using DIKUArcade.Physics;
 using DIKUArcade.Utilities;
-using Squadron;
-using MovementStrategy;
+using Galaga.Squadron;
+using Galaga.MovementStrategy;
 
 
 namespace Galaga.GalagaStates {
     public class GamePaused : IGameState {
         private static GamePaused instance = null;
         // Background
-        private Image image = new Image(Path.Combine("Assets", "galaga.png"));
-        private StationaryShape shape = new StationaryShape(0f, 0f, 1f, 1f);
-        private Entity backGroundImage = new Entity(shape, image);
+        private Image image;
+        private StationaryShape shape;
+        private Entity backGroundImage;
         // Buttons
-        private Vec2F continuePosition = new Vec2F(0.4f, 0.3f);
-        private Vec2F continueExtent = new Vec2F(0.2f, 0.1f);
-        private Vec2F mainMenuPosition = new Vec2F(0.4f, 0.45f);
-        private Vec2F mainMenuExtent = new Vec2F(0.2f, 0.1f);
-        private Text continueButton = new Text("- Continue", continuePosition, continueExtent);
-        private Text mainMenuButton = new Text("- Main Menu", mainMenuPosition, mainMenuExtent);
-        private Text[] menuButtons = new List<Text> { continueButton, mainMenuButton };
+        private Vec2F continuePosition;
+        private Vec2F continueExtent;
+        private Vec2F mainMenuPosition;
+        private Vec2F mainMenuExtent;
+        private Text continueButton;
+        private Text mainMenuButton;
+        private Text[] menuButtons;
         // Button attributes
-        private Vec3I greenActive = new Vec3I(0, 204, 0);
-        private Vec3I grayPassive = new Vec3I(192, 192, 192);
+        private Vec3I greenActive;
+        private Vec3I grayPassive;
         private int fontSize = 16;
         private int activeMenuButton = 0;
         private int maxMenuButtons = 1;
@@ -60,6 +60,22 @@ namespace Galaga.GalagaStates {
         }
 
         public void RenderState() {
+            // DATAAAAA
+            // Background
+            image = new Image(Path.Combine("Assets", "galaga.png"));
+            shape = new StationaryShape(0f, 0f, 1f, 1f);
+            backGroundImage = new Entity(shape, image);
+            // Buttons
+            continuePosition = new Vec2F(0.4f, 0.3f);
+            continueExtent = new Vec2F(0.2f, 0.1f);
+            mainMenuPosition = new Vec2F(0.4f, 0.45f);
+            mainMenuExtent = new Vec2F(0.2f, 0.1f);
+            continueButton = new Text("- Continue", continuePosition, continueExtent);
+            mainMenuButton = new Text("- Main Menu", mainMenuPosition, mainMenuExtent);
+            menuButtons = new List<Text> { continueButton, mainMenuButton };
+            // Button attributes
+            greenActive = new Vec3I(0, 204, 0);
+            grayPassive = new Vec3I(192, 192, 192);
             // Set colors
             for (int i = 0; i >= maxMenuButtons; i++) {
                 if (i == activeMenuButton) {
@@ -70,9 +86,9 @@ namespace Galaga.GalagaStates {
                 menuButtons[i].SetFontSize(fontSize);
             }
             // Render
-            backGroundImage.Render();
+            backGroundImage.Shape.Render();
             foreach (Text button in menuButtons) {
-                menuButtons[i].RenderText();
+                button.RenderText();
             }
         }
 

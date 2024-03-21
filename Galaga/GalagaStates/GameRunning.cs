@@ -5,11 +5,16 @@ using DIKUArcade.State;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using DIKUArcade.Input;
+using System.IO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using DIKUArcade;
 using DIKUArcade.GUI;
-using DIKUArcade.Input;
+using DIKUArcade.Events;
 using DIKUArcade.Physics;
-using System.Collections.Generic;
+using DIKUArcade.Utilities;
 using Galaga.Squadron;
 using Galaga.MovementStrategy;
 
@@ -103,7 +108,7 @@ namespace Galaga.GalagaStates {
             // mangler en til pause
             switch (key) {
                 case KeyboardKey.Left:
-                    GalagaBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "true",
@@ -112,7 +117,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Right:
-                    GalagaBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "true",
@@ -120,7 +125,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Up:
-                    GalagaBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "true",
@@ -128,7 +133,7 @@ namespace Galaga.GalagaStates {
                     });
                     break;
                 case KeyboardKey.Down:
-                    GalagaBus.RegisterEvent(new GameEvent {
+                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
                         From = this,
                         EventType = GameEventType.PlayerEvent,
                         StringArg1 = "true",

@@ -60,27 +60,18 @@ public class Game : DIKUGame, IGameEventProcessor {
                     System.Console.WriteLine("Game Closed");
                     break;
 
-                case "KEY_6_RELEASE":
-                    player.ChangeImage(
-                        new Image(Path.Combine("Assets", "Images", "alternative_player.png"))
-                    );
-                    playerShotImage = new Image(Path.Combine("Assets", "Images", "alternative_bullet.png"));
-                    bonus = true;
-                    break;
+                // case "KEY_6_RELEASE":
+                //     player.ChangeImage(
+                //         new Image(Path.Combine("Assets", "Images", "alternative_player.png"))
+                //     );
+                //     playerShotImage = new Image(Path.Combine("Assets", "Images", "alternative_bullet.png"));
+                //     bonus = true;
+                //     break;
             }
 
-        } else if (gameEvent.EventType == GameEventType.InputEvent) {
-
-            switch (gameEvent.Message) {
-                case "KEY_SPACE_RELEASE":
-                    playerCentre = player.GetCentrum();
-                    PlayerShot shot = new PlayerShot(playerCentre, playerShotImage);
-                    if (bonus) {
-                        shot.Extent = new Vec2F(0.020f, 0.042f);
-                    }
-                    playerShots.AddEntity(shot);
-                    break;
-            }
         }
+        // else if (gameEvent.EventType == GameEventType.InputEvent) {
+
+
     }
 }

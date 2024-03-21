@@ -83,7 +83,7 @@ namespace Galaga.GalagaStates {
                 menuButtons[i].SetFontSize(fontSize);
             }
             // Render
-            backGroundImage.Shape.Render();
+            backGroundImage.Image.Render(backGroundImage.Shape);
             foreach (Text button in menuButtons) {
                 button.RenderText();
             }
@@ -92,18 +92,18 @@ namespace Galaga.GalagaStates {
         public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
             switch (action) {
                 case KeyboardAction.KeyPress:
-                    if (key = KeyboardKey.Up) {
+                    if (key == KeyboardKey.Up) {
                         if (activeMenuButton != 0) {
                             activeMenuButton --;
                         }
-                    } else if (key = KeyboardKey.Down) {
+                    } else if (key == KeyboardKey.Down) {
                         if (activeMenuButton != maxMenuButtons) {
                             activeMenuButton ++;
                         }
                     }
                     break;
                 case KeyboardAction.KeyRelease:
-                    if (key = KeyboardKey.Enter) {
+                    if (key == KeyboardKey.Enter) {
                         // New Game
                         if (activeMenuButton == 0) {
                             GalagaBus.GetBus().RegisterEvent (

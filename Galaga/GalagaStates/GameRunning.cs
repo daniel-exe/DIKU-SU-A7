@@ -52,6 +52,7 @@ namespace Galaga.GalagaStates {
             player = new Player(
                 new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
                 new Image(Path.Combine("Assets", "Images", "Player.png")));
+            GalagaBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
             // !!                                                                                     !!
             // !! skal slettes, men beholdt i tilfælde af det jeg har lavet ikke virker som det skal. !!
             // !!                                                                                     !!
@@ -186,24 +187,33 @@ namespace Galaga.GalagaStates {
                     break;
 
                 case KeyboardKey.Space:
-                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
-                        From = this,
-                        EventType = GameEventType.InputEvent,
-                        Message = "KEY_SPACE_RELEASE",
-                        ObjectArg1 = playerShotImage
-                    });
-                    break;
-
-                // Activate bonus mode!
-                case KeyboardKey.Num_6:
-                    GalagaBus.GetBus().RegisterEvent(new GameEvent {
-                        From = this,
-                        EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
-                        Message = "KEY_6_RELEASE",
-                    });
+                    playerCentre = player.GetCentrum();
+                    PlayerShot shot = new PlayerShot(playerCentre, playerShotImage);
+                    // if (bonus) {
+                    //     shot.Extent = new Vec2F(0.020f, 0.042f);
+                    // }
+                    playerShots.AddEntity(shot);
                     break;
             }
         }
+                    // GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                    //     From = this,
+                    //     EventType = GameEventType.InputEvent,
+                    //     Message = "KEY_SPACE_RELEASE",
+                    //     ObjectArg1 = playerShotImage
+                    // });
+                    // break;
+
+                // Activate bonus mode!
+                // case KeyboardKey.Num_6:
+                //     GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                //         From = this,
+                //         EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
+                //         Message = "KEY_6_RELEASE",
+                //     });
+                //     break;
+        //     }
+        // }
         //Method that creates enemies.
         public void SpawnSquadron() {
         //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // Beholdt in case vi skal lave uendelig mode

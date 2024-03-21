@@ -10,7 +10,6 @@ namespace Galaga.GalagaStates {
             new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
             new Image(Path.Combine("Assets", "Images", "Player.png")));
 
-
         public static GameRunning GetInstance() {
             if (GameRunning.instance == null) {
                 GameRunning.instance = new GameRunning();

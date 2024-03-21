@@ -1,6 +1,7 @@
 using DIKUArcade.Events;
 using DIKUArcade.State;
 
+// Handles GameStateEvents
 namespace Galaga.GalagaStates {
     public class StateMachine : IGameEventProcessor {
         public IGameState ActiveState { get; private set; }

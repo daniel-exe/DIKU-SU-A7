@@ -1,4 +1,4 @@
-﻿namespace Galaga;
+namespace Galaga;
 
 using System;
 using DIKUArcade.GUI;

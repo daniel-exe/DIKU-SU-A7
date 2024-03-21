@@ -1,11 +1,17 @@
 namespace Galaga;
 
+using System.IO;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
+using DIKUArcade;
+using DIKUArcade.GUI;
 using DIKUArcade.Events;
-
-public class Player {
+using DIKUArcade.Input;
+using DIKUArcade.Physics;
+using System.Collections.Generic;
+using System;
+public class Player : IGameEventProcessor {
     private Entity entity;
     private DynamicShape shape;
 
@@ -45,11 +51,11 @@ public class Player {
             shape.Move();
         }
     }
-
-    private void SetMoveLeft(bool val) {
+    public void SetMoveLeft(bool val) {
         if (val) {
             moveLeft -= MOVEMENT_SPEED;
         } else {
+            moveLeft = 0;
             moveLeft = 0;
         }
         UpdateDirection();
@@ -94,6 +100,10 @@ public class Player {
         return centre;
     }
 
+
+    public Vec2F GetExtent{
+        get {return this.shape.Extent;}
+    }
 
     public void ProcessEvent(GameEvent gameEvent) {
         if (gameEvent.EventType == GameEventType.PlayerEvent) { //Maybe dont need this check and instead just run switch cases.

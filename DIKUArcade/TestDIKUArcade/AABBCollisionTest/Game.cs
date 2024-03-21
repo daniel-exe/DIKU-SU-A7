@@ -29,8 +29,11 @@ public class Game : DIKUGame {
         if (collide.Collision) {
             Console.WriteLine($"CollisionDetection occured in direction {collide.CollisionDir}");
             dir *= collide.DirectionFactor;
+            wall.DeleteEntity();
+            System.Console.WriteLine("fuck");
         }
         player.Shape.Position += dir;
+
     }
 
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {

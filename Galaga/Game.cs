@@ -1,15 +1,17 @@
 namespace Galaga;
 
+namespace Galaga;
+
 using System.IO;
 using System.Collections.Generic;
 using DIKUArcade;
 using DIKUArcade.GUI;
-using DIKUArcade.Input;
 using DIKUArcade.Events;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Entities;
 using DIKUArcade.Physics;
+using Galaga.Squadron;
 
 public class Game : DIKUGame, IGameEventProcessor {
     private GameEventBus eventBus;
@@ -28,8 +30,11 @@ public class Game : DIKUGame, IGameEventProcessor {
     private List<Image> explosionStrides;
     private const int EXPLOSION_LENGTH_MS = 500;
 
+    //Squadrons:
+    private ISquadron spawnSquad;
     //Bonus for fun:
     private bool bonus = false;
+
     public Game(WindowArgs windowArgs) : base(windowArgs) {
         //Game:
         eventBus = new GameEventBus();
@@ -41,7 +46,7 @@ public class Game : DIKUGame, IGameEventProcessor {
 
         window.SetKeyEventHandler(KeyHandler);
         eventBus.Subscribe(GameEventType.InputEvent, this);
-        eventBus.Subscribe(GameEventType.PlayerEvent, this);
+        eventBus.Subscribe(GameEventType.PlayerEvent, this); //Maybe subscribe to player
         eventBus.Subscribe(GameEventType.WindowEvent, this);
 
         //Player:
@@ -70,10 +75,10 @@ public class Game : DIKUGame, IGameEventProcessor {
         explosionStrides = ImageStride.CreateStrides(8,
             Path.Combine("Assets", "Images", "Explosion.png"));
     }
-
     public override void Render() {
         player.Render();
-        enemies.RenderEntities();
+        enemies.RenderEntities(); //maybe remove?
+        SpawnSquadron();
         playerShots.RenderEntities();
         enemyExplosions.RenderAnimations();
     }
@@ -127,7 +132,6 @@ public class Game : DIKUGame, IGameEventProcessor {
                 break;
         }
     }
-
     private void KeyRelease(KeyboardKey key) {
         // switch on key string and disable the player's move direction
         switch (key) {
@@ -179,7 +183,6 @@ public class Game : DIKUGame, IGameEventProcessor {
                 break;
         }
     }
-
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
         // TODO: Switch on KeyBoardAction and call proper method
         if (action == KeyboardAction.KeyRelease) {
@@ -261,5 +264,30 @@ public class Game : DIKUGame, IGameEventProcessor {
         StationaryShape explosionShape = new StationaryShape(position, extent);
         ImageStride explosionStride = new ImageStride(EXPLOSION_LENGTH_MS / 8, explosionStrides);
         enemyExplosions.AddAnimation(explosionShape, EXPLOSION_LENGTH_MS, explosionStride);
+    }
+
+
+
+    public void SpawnSquadron() {
+        if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) {
+            List<Image> images = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
+            Random rand = new Random();
+            int num = rand.Next(1, 4);
+            switch (num) {
+                case 1:
+                    spawnSquad = new Rectangle();
+                    break;
+                case 2:
+                    spawnSquad = new Square();
+                    break;
+                case 3:
+                    spawnSquad = new Triangle();
+                    break;
+                default:
+                    break;
+            }
+            spawnSquad.CreateEnemies(images, images);
+        }
+        spawnSquad.Enemies.RenderEntities();
     }
 }

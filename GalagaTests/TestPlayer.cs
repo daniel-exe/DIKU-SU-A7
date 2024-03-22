@@ -1,18 +1,11 @@
+namespace GalagaTests;
+
 using NUnit.Framework;
-using System.IO;
-using System.Collections.Generic;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using DIKUArcade;
-using DIKUArcade.GUI;
-using DIKUArcade.Input;
 using DIKUArcade.Events;
-using DIKUArcade.Physics;
 using Galaga;
-
-
-namespace GalagaTests;
 
 public class TestsPlayer {
     private Player player = new Player(
@@ -35,13 +28,13 @@ public class TestsPlayer {
 
     [Test]
     public void TestMoveLeft() {
-        // Arrange
+
         float oldX = player.GetCentrum().X;
         moveEvent.Message = "MOVE_LEFT";
-        // Act
+    
         player.ProcessEvent(moveEvent);
         player.Move();
-        // Assert
+   
         Assert.True(player.GetCentrum().X == oldX - 0.01f);
     }
 

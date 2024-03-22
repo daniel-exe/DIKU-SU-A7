@@ -1,3 +1,5 @@
+namespace GalagaTests;
+
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -13,7 +15,6 @@ using DIKUArcade.Physics;
 using Galaga;
 using Galaga.MovementStrategy;
 
-namespace GalagaTests;
 [DefaultFloatingPointTolerance(0.0009)]
 public class TestsMovementStrategy {
     private ZigZagDown zigZag = new ZigZagDown();
@@ -21,6 +22,7 @@ public class TestsMovementStrategy {
     private NoMove noMove = new NoMove();
     private Enemy enemy = new Enemy(
         new DynamicShape(new Vec2F(0.1f, 0.9f), new Vec2F(0.1f, 0.1f)),
+        new NoImage(),
         new NoImage()
     );
     private Vec2F oldPosition = new Vec2F(0f, 0f);
@@ -29,6 +31,7 @@ public class TestsMovementStrategy {
     public void Setup() {
         enemy = new Enemy(
             new DynamicShape(new Vec2F(0.1f, 0.9f), new Vec2F(0.1f, 0.1f)),
+            new NoImage(),
             new NoImage()
         );
         oldPosition = enemy.Shape.Position;
@@ -56,7 +59,7 @@ public class TestsMovementStrategy {
         }
         // Predict Y-value at extreme as being 3/4
         // of the period less than the start position.
-        float expectedYValue = enemy.StartPositionY - ((period / 4) * 3);
+        float expectedYValue = enemy.StartPositionY - period / 4 * 3;
         // Assert
         Assert.That(enemy.Shape.Position.Y, Is.EqualTo(expectedYValue));
     }

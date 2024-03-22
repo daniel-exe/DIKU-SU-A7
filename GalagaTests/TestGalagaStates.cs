@@ -1,3 +1,5 @@
+namespace GalagaTests;
+
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -14,7 +16,6 @@ using Galaga;
 using Galaga.MovementStrategy;
 using Galaga.GalagaStates;
 
-namespace GalagaTests;
 public class TestGalagaStates {
 
     [SetUp]

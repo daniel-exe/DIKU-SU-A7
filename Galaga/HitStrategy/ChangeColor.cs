@@ -4,7 +4,7 @@ using DIKUArcade.Graphics;
 
 public class ChangeColor : IHitStrategy {
     public bool Hit(Enemy enemy) {
-        if (enemy.Hitpoints <= 0) {
+        if (enemy.HitPoints <= 0) {
             return true;
         }
 

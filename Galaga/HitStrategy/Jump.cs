@@ -2,7 +2,7 @@ namespace Galaga.HitStrategy;
 
 public class Jump : IHitStrategy {
     public bool Hit(Enemy enemy) {
-        if (enemy.Hitpoints <= 0) {
+        if (enemy.HitPoints <= 0) {
             return true;
         }
         float enemyWidth = enemy.Shape.Extent.X;

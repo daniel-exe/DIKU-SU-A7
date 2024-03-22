@@ -39,7 +39,7 @@ public class MainMenu : IGameState {
 
     public void ResetState() {
         activeMenuButton = 0;
-        // DATAAAAA
+        // DATA
         // Background
         image = new Image(Path.Combine("Assets", "Images", "TitleImage.png"));
         shape = new StationaryShape(0f, 0f, 1f, 1f);
@@ -65,7 +65,6 @@ public class MainMenu : IGameState {
     }
 
     public void RenderState() {
-        // Render
         backGroundImage.Image.Render(backGroundImage.Shape);
         foreach (Text button in menuButtons) {
             button.RenderText();

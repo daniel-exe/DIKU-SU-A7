@@ -24,7 +24,6 @@ public class StateTransformer {
                 return "GAME_PAUSED";
             case GameStateType.MainMenu:
                 return "MAIN_MENU";
-            // This function shouldn't need a default section at this time
             default:
                 throw new ArgumentException("How did you catch this exception?");
         }

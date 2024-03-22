@@ -12,10 +12,10 @@ public class Game : DIKUGame, IGameEventProcessor {
 
     public Game(WindowArgs windowArgs) : base(windowArgs) {
 
-        //Initialize Statemachine:
+        // Initialize Statemachine:
         stateMachine = new StateMachine();
 
-        //Initialize GalagaBus:
+        // Initialize GalagaBus:
         GalagaBus.GetBus().InitializeEventBus(new List<GameEventType> {
             GameEventType.InputEvent,
             GameEventType.PlayerEvent,
@@ -28,15 +28,16 @@ public class Game : DIKUGame, IGameEventProcessor {
         GalagaBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
         GalagaBus.GetBus().Subscribe(GameEventType.InputEvent, stateMachine);
     }
+
     public override void Render() {
         stateMachine.ActiveState.RenderState();
     }
+
     public override void Update() {
         window.PollEvents();
-        // GalagaBus.GetBus().ProcessEventsSequentially();
         stateMachine.ActiveState.UpdateState();
-        // GalagaBus.GetBus().ProcessEvents();
     }
+
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
         stateMachine.ActiveState.HandleKeyEvent(action, key);
     }
@@ -50,18 +51,7 @@ public class Game : DIKUGame, IGameEventProcessor {
                     break;
                 default:
                     break;
-                    // case "KEY_6_RELEASE":
-                    //     player.ChangeImage(
-                    //         new Image(Path.Combine("Assets", "Images", "alternative_player.png"))
-                    //     );
-                    //     playerShotImage = new Image(Path.Combine("Assets", "Images", "alternative_bullet.png"));
-                    //     bonus = true;
-                    //     break;
             }
-
         }
-        // else if (gameEvent.EventType == GameEventType.InputEvent) {
-
-
     }
 }

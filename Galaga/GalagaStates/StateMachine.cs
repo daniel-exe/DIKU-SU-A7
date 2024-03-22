@@ -3,21 +3,17 @@ namespace Galaga.GalagaStates;
 using DIKUArcade.Events;
 using DIKUArcade.State;
 
-// FIX singleton?
-// Handles GameStateEvents
-
 public class StateMachine : IGameEventProcessor {
     public IGameState ActiveState {
         get; private set;
     }
     public StateMachine() {
-        // GalagaBus.GetBus().Subscribe(GameEventType.GameStateEvent, this);
-        // GalagaBus.GetBus().Subscribe(GameEventType.InputEvent, this);
         ActiveState = MainMenu.GetInstance();
         GameRunning.GetInstance();
         GamePaused.GetInstance();
     }
 
+    // Sets current game state
     private void SwitchState(GameStateType stateType) {
         switch (stateType) {
             case GameStateType.GameRunning:
@@ -32,6 +28,7 @@ public class StateMachine : IGameEventProcessor {
         }
     }
 
+    // Catches GameStateEvents and calls .ResetState() when needed
     public void ProcessEvent(GameEvent gameEvent) {
         if (gameEvent.EventType == GameEventType.GameStateEvent) {
             switch (gameEvent.StringArg1) {

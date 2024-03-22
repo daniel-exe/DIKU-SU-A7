@@ -15,7 +15,7 @@ using Galaga.MovementStrategy;
 
 namespace GalagaTests;
 [DefaultFloatingPointTolerance(0.0009)]
-public class TestsEnemy {
+public class TestsMovementStrategy {
     private ZigZagDown zigZag = new ZigZagDown();
     private Down down = new Down();
     private NoMove noMove = new NoMove();

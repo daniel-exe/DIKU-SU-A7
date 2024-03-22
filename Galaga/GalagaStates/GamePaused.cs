@@ -39,7 +39,7 @@ public class GamePaused : IGameState {
 
     public void ResetState() {
         activeMenuButton = 0;
-        // DATAAAAA
+        // DATA
         // Background
         image = new Image(Path.Combine("Assets", "galaga.png"));
         shape = new StationaryShape(0f, 0f, 1f, 1f);
@@ -60,13 +60,11 @@ public class GamePaused : IGameState {
         menuButtons = new Text[] { continueButton, mainMenuButton };
     }
 
-    // Only implemented to fulfill contract
     public void UpdateState() {
         GalagaBus.GetBus().ProcessEventsSequentially();
     }
 
     public void RenderState() {
-        // Render
         backGroundImage.Image.Render(backGroundImage.Shape);
         foreach (Text button in menuButtons) {
             button.RenderText();

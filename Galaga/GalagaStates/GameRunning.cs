@@ -15,12 +15,6 @@ using DIKUArcade.Utilities;
 using Galaga.Squadron;
 using Galaga.MovementStrategy;
 
-
-// Squadron ting flyttet
-// Iterate Shots flyttet
-// Explosions flyttet
-// Flyttet Key Press
-// Flyttet Key Release
 public class GameRunning : IGameState {
     private static GameRunning instance = null;
     // Player
@@ -52,29 +46,19 @@ public class GameRunning : IGameState {
             new DynamicShape(new Vec2F(0.45f, 0.1f), new Vec2F(0.1f, 0.1f)),
             new Image(Path.Combine("Assets", "Images", "Player.png")));
         GalagaBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
-        // !!                                                                                     !!
-        // !! skal slettes, men beholdt i tilfælde af det jeg har lavet ikke virker som det skal. !!
-        // !!                                                                                     !!
-        //enemies = new EntityContainer<Enemy>(numEnemies);
-        //for (int i = 0; i < numEnemies; i++) {
-        //   enemies.AddEntity(new Enemy(
-        //        new DynamicShape(new Vec2F(0.1f + (float)i * 0.1f, 0.9f), new Vec2F(0.1f, 0.1f)),
-        //        new ImageStride(80, images)));
-        //}
+
         SpawnSquadron();
         SetRndMovementStrat();
 
         playerShots = new EntityContainer<PlayerShot>();
         playerShotImage = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
-        // Squadspawn laver et random antal fjender
-        // 8 sat ind, bare fordi
+
         enemyExplosions = new AnimationContainer(8);
         explosionStrides = ImageStride.CreateStrides(8,
             Path.Combine("Assets", "Images", "Explosion.png"));
 
     }
 
-    // Updates game
     public void UpdateState() {
         GalagaBus.GetBus().ProcessEventsSequentially();
         player.Move();
@@ -92,7 +76,6 @@ public class GameRunning : IGameState {
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         switch (action) {
             case KeyboardAction.KeyPress:
-
                 KeyPress(key);
                 break;
             case KeyboardAction.KeyRelease:
@@ -104,15 +87,13 @@ public class GameRunning : IGameState {
     }
 
     private void KeyPress(KeyboardKey key) {
-        // mangler en til pause
         switch (key) {
             case KeyboardKey.Left:
                 GalagaBus.GetBus().RegisterEvent(new GameEvent {
                     From = this,
                     EventType = GameEventType.PlayerEvent,
                     StringArg1 = "true",
-                    Message = "MOVE_LEFT", //Could maybe make just ONE registerevent, and then save a new message for each keypress?
-                    // Epic suggestion.
+                    Message = "MOVE_LEFT",
                 });
                 break;
             case KeyboardKey.Right:
@@ -194,42 +175,17 @@ public class GameRunning : IGameState {
                     }
                 );
                 break;
-
-
-            // Removed for now - since we cant figure out how to process the event without creating a ProcessEvent within this class.
-            // case KeyboardKey.Space:
-            //     GalagaBus.GetBus().RegisterEvent(new GameEvent {
-            //         From = this,
-            //         EventType = GameEventType.InputEvent,
-            //         Message = "KEY_SPACE_RELEASE",
-            //         ObjectArg1 = playerShotImage
-            //     });
-            //     break;
-
-            //Alternative easy fix.
+            // We cant figure out how to process the event without creating a ProcessEvent within this class.
             case KeyboardKey.Space:
                 playerCentre = player.GetCentrum();
                 PlayerShot shot = new PlayerShot(playerCentre, playerShotImage);
-                // if (bonus) {
-                //     shot.Extent = new Vec2F(0.020f, 0.042f); //Can be added later if we fix processEvent thing.
-                // }
                 playerShots.AddEntity(shot);
                 break;
-
-                // // Activate bonus mode!
-                // case KeyboardKey.Num_6:
-                //     GalagaBus.GetBus().RegisterEvent(new GameEvent {
-                //         From = this,
-                //         EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
-                //         Message = "KEY_6_RELEASE",
-                //     });
-                //     break;
         }
     }
+
     //Method that creates enemies.
-    public void SpawnSquadron() {
-        //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // Beholdt in case vi skal lave uendelig mode
-        // if (spawnSquad == null) {
+    private void SpawnSquadron() {
         List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
         List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
 
@@ -249,7 +205,6 @@ public class GameRunning : IGameState {
                 break;
         }
         spawnSquad.CreateEnemies(enemyStridesBlue, enemyStridesRed);
-        // }
     }
 
     // Randomly selects a movement strategy by using reflection
@@ -264,7 +219,7 @@ public class GameRunning : IGameState {
         moveStrategy = (IMovementStrategy) Activator.CreateInstance(moveStrategyList[rndIndex]);
     }
 
-    public void AddExplosion(Vec2F position, Vec2F extent) {
+    private void AddExplosion(Vec2F position, Vec2F extent) {
         StationaryShape explosionShape = new StationaryShape(position, extent);
         ImageStride explosionStride = new ImageStride(EXPLOSION_LENGTH_MS / 8, explosionStrides);
         enemyExplosions.AddAnimation(explosionShape, EXPLOSION_LENGTH_MS, explosionStride);

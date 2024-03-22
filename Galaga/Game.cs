@@ -36,6 +36,8 @@ public class Game : DIKUGame, IGameEventProcessor {
         window.SetKeyEventHandler(KeyHandler);
         // eventBus.Subscribe(GameEventType.InputEvent, this);
         GalagaBus.GetBus().Subscribe(GameEventType.WindowEvent, this);
+        GalagaBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
+        GalagaBus.GetBus().Subscribe(GameEventType.InputEvent, stateMachine);
         // eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
         // eventBus.Subscribe(GameEventType.PlayerEvent, this); //Subscribed to player
 
@@ -45,8 +47,9 @@ public class Game : DIKUGame, IGameEventProcessor {
     }
     public override void Update() {
         window.PollEvents();
+        // GalagaBus.GetBus().ProcessEventsSequentially();
         stateMachine.ActiveState.UpdateState();
-        GalagaBus.GetBus().ProcessEvents();
+        // GalagaBus.GetBus().ProcessEvents();
     }
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
         stateMachine.ActiveState.HandleKeyEvent(action, key);

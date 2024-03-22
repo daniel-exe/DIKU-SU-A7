@@ -9,4 +9,3 @@ class Program {
         game.Run();
     }
 }
-

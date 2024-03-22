@@ -102,8 +102,10 @@ public class Player : IGameEventProcessor {
     }
 
 
-    public Vec2F GetExtent{
-        get {return this.shape.Extent;}
+    public Vec2F GetExtent {
+        get {
+            return this.shape.Extent;
+        }
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
@@ -128,8 +130,6 @@ public class Player : IGameEventProcessor {
             }
         }
     }
-
-
 
     // Used for bonus
     public void ChangeImage(IBaseImage newImage) {

@@ -6,11 +6,15 @@ using DIKUArcade.Math;
 using System.Collections.Generic;
 using System;
 public class Square : ISquadron {
-    public EntityContainer<Enemy> Enemies { get; }
+    public EntityContainer<Enemy> Enemies {
+        get;
+    }
     public Square() {
         this.Enemies = new EntityContainer<Enemy>();
     }
-    public int MaxEnemies { get; }
+    public int MaxEnemies {
+        get;
+    }
     public void CreateEnemies(List<Image> enemyStride, List<Image> alternativeEnemyStride) {
         const float START_X = 0.3f;
         const float START_Y = 0.9f;

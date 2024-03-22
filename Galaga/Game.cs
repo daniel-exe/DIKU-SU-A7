@@ -1,26 +1,19 @@
 namespace Galaga;
 
-using System.IO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using DIKUArcade;
 using DIKUArcade.GUI;
 using DIKUArcade.Events;
-using DIKUArcade.Graphics;
-using DIKUArcade.Math;
-using DIKUArcade.Entities;
-using DIKUArcade.Physics;
 using DIKUArcade.Input;
-using DIKUArcade.Utilities;
-using Squadron;
-using MovementStrategy;
 using Galaga.GalagaStates;
 
 public class Game : DIKUGame, IGameEventProcessor {
     private StateMachine stateMachine;
 
     public Game(WindowArgs windowArgs) : base(windowArgs) {
+
+        //Initialize Statemachine:
+        stateMachine = new StateMachine();
 
         //Initialize GalagaBus:
         GalagaBus.GetBus().InitializeEventBus(new List<GameEventType> {
@@ -30,27 +23,19 @@ public class Game : DIKUGame, IGameEventProcessor {
             GameEventType.GameStateEvent
         });
 
-        //Initialize Statemachine:
-        stateMachine = new StateMachine();
-
         window.SetKeyEventHandler(KeyHandler);
-        // eventBus.Subscribe(GameEventType.InputEvent, this);
         GalagaBus.GetBus().Subscribe(GameEventType.WindowEvent, this);
         GalagaBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
-        // GalagaBus.GetBus().Subscribe(GameEventType.InputEvent, stateMachine);
-        // GalagaBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
-
-        // eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
-        // eventBus.Subscribe(GameEventType.PlayerEvent, this); //Subscribed to player
-
+        GalagaBus.GetBus().Subscribe(GameEventType.InputEvent, stateMachine);
     }
     public override void Render() {
         stateMachine.ActiveState.RenderState();
     }
     public override void Update() {
         window.PollEvents();
+        // GalagaBus.GetBus().ProcessEventsSequentially();
         stateMachine.ActiveState.UpdateState();
-        GalagaBus.GetBus().ProcessEvents();
+        // GalagaBus.GetBus().ProcessEvents();
     }
     private void KeyHandler(KeyboardAction action, KeyboardKey key) {
         stateMachine.ActiveState.HandleKeyEvent(action, key);
@@ -65,13 +50,13 @@ public class Game : DIKUGame, IGameEventProcessor {
                     break;
                 default:
                     break;
-                // case "KEY_6_RELEASE":
-                //     player.ChangeImage(
-                //         new Image(Path.Combine("Assets", "Images", "alternative_player.png"))
-                //     );
-                //     playerShotImage = new Image(Path.Combine("Assets", "Images", "alternative_bullet.png"));
-                //     bonus = true;
-                //     break;
+                    // case "KEY_6_RELEASE":
+                    //     player.ChangeImage(
+                    //         new Image(Path.Combine("Assets", "Images", "alternative_player.png"))
+                    //     );
+                    //     playerShotImage = new Image(Path.Combine("Assets", "Images", "alternative_bullet.png"));
+                    //     bonus = true;
+                    //     break;
             }
 
         }

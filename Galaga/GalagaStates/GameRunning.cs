@@ -62,7 +62,7 @@ public class GameRunning : IGameState {
         //        new ImageStride(80, images)));
         //}
         SpawnSquadron();
-        setRndMovementStrat();
+        SetRndMovementStrat();
 
         playerShots = new EntityContainer<PlayerShot>();
         playerShotImage = new Image(Path.Combine("Assets", "Images", "BulletRed2.png"));
@@ -92,6 +92,7 @@ public class GameRunning : IGameState {
     public void HandleKeyEvent(KeyboardAction action, KeyboardKey key) {
         switch (action) {
             case KeyboardAction.KeyPress:
+
                 KeyPress(key);
                 break;
             case KeyboardAction.KeyRelease:
@@ -140,11 +141,11 @@ public class GameRunning : IGameState {
                 break;
 
             case KeyboardKey.Escape:
-                GalagaBus.GetBus().RegisterEvent (new GameEvent {
-                        EventType = GameEventType.GameStateEvent,
-                        Message = "CHANGE_STATE",
-                        StringArg1 = "GAME_PAUSED"
-                    }
+                GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                    EventType = GameEventType.GameStateEvent,
+                    Message = "CHANGE_STATE",
+                    StringArg1 = "GAME_PAUSED"
+                }
                 );
                 break;
         }
@@ -184,6 +185,15 @@ public class GameRunning : IGameState {
                     Message = "MOVE_DOWN",
                 });
                 break;
+            case KeyboardKey.Escape:
+                GalagaBus.GetBus().RegisterEvent(
+                    new GameEvent {
+                        EventType = GameEventType.GameStateEvent,
+                        Message = "CHANGE_STATE",
+                        StringArg1 = "GAME_PAUSED"
+                    }
+                );
+                break;
 
 
             // Removed for now - since we cant figure out how to process the event without creating a ProcessEvent within this class.
@@ -206,44 +216,44 @@ public class GameRunning : IGameState {
                 playerShots.AddEntity(shot);
                 break;
 
-            // // Activate bonus mode!
-            // case KeyboardKey.Num_6:
-            //     GalagaBus.GetBus().RegisterEvent(new GameEvent {
-            //         From = this,
-            //         EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
-            //         Message = "KEY_6_RELEASE",
-            //     });
-            //     break;
+                // // Activate bonus mode!
+                // case KeyboardKey.Num_6:
+                //     GalagaBus.GetBus().RegisterEvent(new GameEvent {
+                //         From = this,
+                //         EventType = GameEventType.WindowEvent, //Should this be a WindowEvent??? or something else?
+                //         Message = "KEY_6_RELEASE",
+                //     });
+                //     break;
         }
     }
     //Method that creates enemies.
     public void SpawnSquadron() {
-    //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // Beholdt in case vi skal lave uendelig mode
-        if (spawnSquad == null) {
-            List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
-            List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
+        //if (spawnSquad == null || spawnSquad.Enemies.CountEntities() == 0) // Beholdt in case vi skal lave uendelig mode
+        // if (spawnSquad == null) {
+        List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine("Assets", "Images", "BlueMonster.png"));
+        List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "RedMonster.png"));
 
-            Random rand = new Random();
-            int num = rand.Next(1, 4);
-            switch (num) {
-                case 1:
-                    spawnSquad = new Rectangle();
-                    break;
-                case 2:
-                    spawnSquad = new Square();
-                    break;
-                case 3:
-                    spawnSquad = new Triangle();
-                    break;
-                default:
-                    break;
-            }
-            spawnSquad.CreateEnemies(enemyStridesBlue, enemyStridesRed);
+        Random rand = new Random();
+        int num = rand.Next(1, 4);
+        switch (num) {
+            case 1:
+                spawnSquad = new Rectangle();
+                break;
+            case 2:
+                spawnSquad = new Square();
+                break;
+            case 3:
+                spawnSquad = new Triangle();
+                break;
+            default:
+                break;
         }
+        spawnSquad.CreateEnemies(enemyStridesBlue, enemyStridesRed);
+        // }
     }
 
     // Randomly selects a movement strategy by using reflection
-    private void setRndMovementStrat() {
+    private void SetRndMovementStrat() {
         var moveStrategyList = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(p => typeof(IMovementStrategy).IsAssignableFrom(p) && p.IsClass)
@@ -251,8 +261,9 @@ public class GameRunning : IGameState {
 
         int lengthOfList = moveStrategyList.Count();
         int rndIndex = RandomGenerator.Generator.Next(0, lengthOfList);
-        moveStrategy = (IMovementStrategy)Activator.CreateInstance(moveStrategyList[rndIndex]);
+        moveStrategy = (IMovementStrategy) Activator.CreateInstance(moveStrategyList[rndIndex]);
     }
+
     public void AddExplosion(Vec2F position, Vec2F extent) {
         StationaryShape explosionShape = new StationaryShape(position, extent);
         ImageStride explosionStride = new ImageStride(EXPLOSION_LENGTH_MS / 8, explosionStrides);

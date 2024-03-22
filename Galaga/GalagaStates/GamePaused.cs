@@ -25,7 +25,7 @@ public class GamePaused : IGameState {
     // Button attributes
     private Vec3I greenActive;
     private Vec3I grayPassive;
-    private int fontSize = 30;
+    private int fontSize = 55;
     private int activeMenuButton = 0;
     private int maxMenuButtons = 1;
 
@@ -37,9 +37,27 @@ public class GamePaused : IGameState {
         return GamePaused.instance;
     }
 
-    // Only implemented to fulfill contract
     public void ResetState() {
         activeMenuButton = 0;
+        // DATAAAAA
+        // Background
+        image = new Image(Path.Combine("Assets", "galaga.png"));
+        shape = new StationaryShape(0f, 0f, 1f, 1f);
+        backGroundImage = new Entity(shape, image);
+        // Buttons
+        continuePosition = new Vec2F(0.1f, 0.35f);
+        continueExtent = new Vec2F(0.3f, 0.4f);
+        mainMenuPosition = new Vec2F(0.1f, 0.25f);
+        mainMenuExtent = new Vec2F(0.3f, 0.4f);
+        continueButton = new Text("- Continue", continuePosition, continueExtent);
+        mainMenuButton = new Text("- Main Menu", mainMenuPosition, mainMenuExtent);
+        greenActive = new Vec3I(0, 204, 0);
+        grayPassive = new Vec3I(192, 192, 192);
+        continueButton.SetColor(greenActive);
+        mainMenuButton.SetColor(grayPassive);
+        continueButton.SetFontSize(fontSize);
+        mainMenuButton.SetFontSize(fontSize);
+        menuButtons = new Text[] { continueButton, mainMenuButton };
     }
 
     // Only implemented to fulfill contract
@@ -48,31 +66,6 @@ public class GamePaused : IGameState {
     }
 
     public void RenderState() {
-        // DATAAAAA
-        // Background
-        image = new Image(Path.Combine("Assets", "galaga.png"));
-        shape = new StationaryShape(0f, 0f, 1f, 1f);
-        backGroundImage = new Entity(shape, image);
-        // Buttons
-        continuePosition = new Vec2F(0.4f, 0.3f);
-        continueExtent = new Vec2F(0.2f, 0.1f);
-        mainMenuPosition = new Vec2F(0.4f, 0.45f);
-        mainMenuExtent = new Vec2F(0.2f, 0.1f);
-        continueButton = new Text("- Continue", continuePosition, continueExtent);
-        mainMenuButton = new Text("- Main Menu", mainMenuPosition, mainMenuExtent);
-        menuButtons = new Text[] { continueButton, mainMenuButton };
-        // Button attributes
-        greenActive = new Vec3I(0, 204, 0);
-        grayPassive = new Vec3I(192, 192, 192);
-        // Set colors
-        for (int i = 0; i >= maxMenuButtons; i++) {
-            if (i == activeMenuButton) {
-                menuButtons[i].SetColor(greenActive);
-            } else {
-                menuButtons[i].SetColor(grayPassive);
-            }
-            menuButtons[i].SetFontSize(fontSize);
-        }
         // Render
         backGroundImage.Image.Render(backGroundImage.Shape);
         foreach (Text button in menuButtons) {
@@ -85,11 +78,15 @@ public class GamePaused : IGameState {
             case KeyboardAction.KeyPress:
                 if (key == KeyboardKey.Up) {
                     if (activeMenuButton != 0) {
-                        activeMenuButton --;
+                        activeMenuButton--;
+                        menuButtons[0].SetColor(greenActive);
+                        menuButtons[1].SetColor(grayPassive);
                     }
                 } else if (key == KeyboardKey.Down) {
                     if (activeMenuButton != maxMenuButtons) {
-                        activeMenuButton ++;
+                        activeMenuButton++;
+                        menuButtons[1].SetColor(greenActive);
+                        menuButtons[0].SetColor(grayPassive);
                     }
                 }
                 break;
@@ -98,16 +95,16 @@ public class GamePaused : IGameState {
                 if (key == KeyboardKey.Enter) {
                     // Continue
                     if (activeMenuButton == 0) {
-                        GalagaBus.GetBus().RegisterEvent (
+                        GalagaBus.GetBus().RegisterEvent(
                             new GameEvent {
                                 EventType = GameEventType.GameStateEvent,
                                 Message = "CHANGE_STATE",
                                 StringArg1 = "GAME_RUNNING"
                             }
                         );
-                    // Main Menu
+                        // Main Menu
                     } else if (activeMenuButton == 1) {
-                        GalagaBus.GetBus().RegisterEvent (
+                        GalagaBus.GetBus().RegisterEvent(
                             new GameEvent {
                                 EventType = GameEventType.GameStateEvent,
                                 Message = "CHANGE_STATE",

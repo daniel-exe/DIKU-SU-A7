@@ -8,13 +8,17 @@ using System.Collections.Generic;
 
 public class Triangle : ISquadron {
 
-    public EntityContainer<Enemy> Enemies { get; }
+    public EntityContainer<Enemy> Enemies {
+        get;
+    }
 
     public Triangle() {
         this.Enemies = new EntityContainer<Enemy>();
     }
 
-    public int MaxEnemies { get; }
+    public int MaxEnemies {
+        get;
+    }
     // The triangle instantiates a BASE_X and Y, that constitutes the triangles dimensions
     // where BASE_X is the leftmost vertex' placement.
     // It then calculates the height and uses it to place the top vertex
@@ -25,7 +29,7 @@ public class Triangle : ISquadron {
         const float BASE_Y = 0.7f;
         const float SIDE_LENGTH = 0.1f;
 
-        float height = SIDE_LENGTH * (float)Math.Sqrt(3) / 2;
+        float height = SIDE_LENGTH * (float) Math.Sqrt(3) / 2;
 
         Vec2F topVertex = new Vec2F(BASE_X + SIDE_LENGTH / 2, BASE_Y - height);
         this.Enemies.AddEntity(new Enemy(

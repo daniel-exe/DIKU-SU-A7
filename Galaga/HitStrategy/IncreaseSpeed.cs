@@ -5,7 +5,7 @@ public class IncreaseSpeed : IHitStrategy {
         if (enemy.Hitpoints <= 0) {
             return true;
         }
-        enemy.Speed *= 10;
+        enemy.Speed *= 2;
         return false;
     }
 }

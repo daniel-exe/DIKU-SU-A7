@@ -25,7 +25,7 @@ public class Enemy : Entity {
 
     //Bruges ikke!!!??:
     public List<Image> enemyStridesGreen = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "GreenMonster.png"));
-    private int speed;
+    private int speed = 1;
 
     private List<Type> hitStratList;
     private IHitStrategy hitStrat;

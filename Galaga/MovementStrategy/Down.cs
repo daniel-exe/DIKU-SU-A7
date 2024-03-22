@@ -4,7 +4,8 @@ using DIKUArcade.Entities;
 
 public class Down : IMovementStrategy {
     public void MoveEnemy(Enemy enemy) {
-        enemy.Shape.MoveY(-0.001f);
+        float speed = 0.0003f * enemy.Speed;
+        enemy.Shape.MoveY(- speed);
     }
 
     public void MoveEnemies(EntityContainer<Enemy> enemies) {

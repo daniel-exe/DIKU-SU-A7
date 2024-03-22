@@ -5,7 +5,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Math;
 public class ZigZagDown : IMovementStrategy {
     public void MoveEnemy(Enemy enemy) {
-        float speed = 0.0003f;
+        float speed = 0.0003f * enemy.Speed;
         float period = 0.045f;
         float amplitude = 0.05f;
 

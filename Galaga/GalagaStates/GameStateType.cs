@@ -1,7 +1,6 @@
-namespace Galaga.GalagaStates {
-    public enum GameStateType {
-        GameRunning,
-        GamePaused,
-        MainMenu
-    }
+namespace Galaga.GalagaStates;
+public enum GameStateType {
+    GameRunning,
+    GamePaused,
+    MainMenu
 }

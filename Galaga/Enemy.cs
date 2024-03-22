@@ -11,8 +11,12 @@ using HitStrategy;
 
 public class Enemy : Entity {
 
-    public float StartPositionX { get; } //til TA: burde dette måske laves med field + properties?
-    public float StartPositionY { get; } //til TA: burde dette måske laves med field + properties?
+    public float StartPositionX {
+        get;
+    } //til TA: burde dette måske laves med field + properties?
+    public float StartPositionY {
+        get;
+    } //til TA: burde dette måske laves med field + properties?
 
     private int maxHitpoints = 10; //Maybe constant.
     private int hitpoints;
@@ -21,7 +25,7 @@ public class Enemy : Entity {
 
     //Bruges ikke!!!??:
     public List<Image> enemyStridesGreen = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "GreenMonster.png"));
-    private int speed;
+    private int speed = 1;
 
     private List<Type> hitStratList;
     private IHitStrategy hitStrat;
@@ -30,21 +34,28 @@ public class Enemy : Entity {
     public bool Enraged = false;
 
     public int Speed {
-        get {return speed;}
-        set {speed = value;}
+        get {
+            return speed;
+        }
+        set {
+            speed = value;
+        }
     }
 
     public int MaxHitpoints {
-        get {return maxHitpoints;}
+        get {
+            return maxHitpoints;
+        }
     }
 
     public int Hitpoints {
-        get {return hitpoints;}
+        get {
+            return hitpoints;
+        }
         set {
             if (value <= MaxHitpoints) {
                 hitpoints = value;
-            }
-            else {
+            } else {
                 hitpoints = MaxHitpoints;
             }
         }
@@ -56,14 +67,14 @@ public class Enemy : Entity {
         this.shape = shape;
         Hitpoints = MaxHitpoints;
         enemyStridesRed = alternativeEnemyImage;
-        getStrategyList();
+        GetStrategyList();
     }
 
-    public double GetRandomNumber(double minimum, double maximum){
+    public double GetRandomNumber(double minimum, double maximum) {
         return RandomGenerator.Generator.NextDouble() * (maximum - minimum) + minimum;
     }
 
-    private void getStrategyList() {
+    private void GetStrategyList() {
         var type = typeof(IHitStrategy);
         var strategyList = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
@@ -72,7 +83,7 @@ public class Enemy : Entity {
         hitStratList = strategyList;
     }
 
-    private IHitStrategy getRndStrategy() {
+    private IHitStrategy GetRndStrategy() {
         int lenghtOfList = hitStratList.Count();
         int rndIndex = RandomGenerator.Generator.Next(0, lenghtOfList);
         IHitStrategy rndStrat = (IHitStrategy) Activator.CreateInstance(hitStratList[rndIndex]);
@@ -81,7 +92,7 @@ public class Enemy : Entity {
 
     public bool GetHit(int damage) {
         Hitpoints -= damage;
-        hitStrat = getRndStrategy();
+        hitStrat = GetRndStrategy();
         return hitStrat.Hit(this);
     }
 }

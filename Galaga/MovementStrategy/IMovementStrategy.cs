@@ -1,8 +1,7 @@
-using DIKUArcade.Entities;
+namespace Galaga.MovementStrategy;
 
-namespace Galaga.MovementStrategy {
-    public interface IMovementStrategy {
-        void MoveEnemy (Enemy enemy);
-        void MoveEnemies (EntityContainer<Enemy> enemies);
-    }
+using DIKUArcade.Entities;
+public interface IMovementStrategy {
+    void MoveEnemy(Enemy enemy);
+    void MoveEnemies(EntityContainer<Enemy> enemies);
 }

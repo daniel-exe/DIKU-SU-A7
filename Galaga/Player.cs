@@ -4,6 +4,7 @@ using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using DIKUArcade.Events;
+
 public class Player : IGameEventProcessor {
     private Entity entity;
     private DynamicShape shape;
@@ -12,13 +13,14 @@ public class Player : IGameEventProcessor {
     private float moveRight = 0.0f;
     private float moveUp = 0.0f;
     private float moveDown = 0.0f;
-    private const float MOVEMENT_SPEED = 0.01f;
+    private const float MOVEMENT_SPEED = 0.015f;
 
-    public int Damage = 1;
+    public int Damage { get; private set; }
 
     public Player(DynamicShape shape, IBaseImage image) {
         entity = new Entity(shape, image);
         this.shape = shape;
+        Damage = 1;
     }
 
     public void Render() {
@@ -91,7 +93,7 @@ public class Player : IGameEventProcessor {
     }
 
     //Method for getting the players position (the centre coordinates).
-    public Vec2F GetCentrum() { //maybe make this a method of Entity? since used in player AND enemy?
+    public Vec2F GetCentrum() {
         Vec2F pos = shape.Position;
         float playerWidth = shape.Extent.X;
         float playerHeight = shape.Extent.Y;
@@ -102,12 +104,14 @@ public class Player : IGameEventProcessor {
     }
 
 
-    public Vec2F GetExtent{
-        get {return this.shape.Extent;}
+    public Vec2F GetExtent {
+        get {
+            return this.shape.Extent;
+        }
     }
 
     public void ProcessEvent(GameEvent gameEvent) {
-        if (gameEvent.EventType == GameEventType.PlayerEvent) { //Maybe dont need this check and instead just run switch cases.
+        if (gameEvent.EventType == GameEventType.PlayerEvent) {
             bool boolArg = Convert.ToBoolean(gameEvent.StringArg1);
             switch (gameEvent.Message) {
                 case "MOVE_LEFT":
@@ -128,8 +132,6 @@ public class Player : IGameEventProcessor {
             }
         }
     }
-
-
 
     // Used for bonus
     public void ChangeImage(IBaseImage newImage) {

@@ -8,7 +8,7 @@ using DIKUArcade.Graphics;
 using DIKUArcade.Math;
 using System.Runtime.InteropServices;
 
-public class TestsPlayer {
+public class TestsPlayer1 {
 
     [OneTimeSetUp]
     public void Init() {

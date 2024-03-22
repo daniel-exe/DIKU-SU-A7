@@ -3,7 +3,6 @@ namespace Galaga;
 using DIKUArcade.Entities;
 using DIKUArcade.Graphics;
 using DIKUArcade.Math;
-using OpenTK.Graphics.ES20;
 
 public class PlayerShot : Entity {
     private static Vec2F extent = new Vec2F(0.008f, 0.021f);

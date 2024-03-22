@@ -18,14 +18,11 @@ using MovementStrategy;
 using Galaga.GalagaStates;
 
 public class Game : DIKUGame, IGameEventProcessor {
-    //EventBus:
-    // private GalagaBus eventBus = GalagaBus.GetBus(); Not Necessary?
-    //StateMachine:
-    // private StateMachine stateMachine = new StateMachine blabla
     private StateMachine stateMachine;
+
     public Game(WindowArgs windowArgs) : base(windowArgs) {
-        stateMachine = new StateMachine();
-        //GalagaBus initializing:
+
+        //Initialize GalagaBus:
         GalagaBus.GetBus().InitializeEventBus(new List<GameEventType> {
             GameEventType.InputEvent,
             GameEventType.PlayerEvent,
@@ -33,9 +30,16 @@ public class Game : DIKUGame, IGameEventProcessor {
             GameEventType.GameStateEvent
         });
 
+        //Initialize Statemachine:
+        stateMachine = new StateMachine();
+
         window.SetKeyEventHandler(KeyHandler);
         // eventBus.Subscribe(GameEventType.InputEvent, this);
         GalagaBus.GetBus().Subscribe(GameEventType.WindowEvent, this);
+        GalagaBus.GetBus().Subscribe(GameEventType.GameStateEvent, stateMachine);
+        // GalagaBus.GetBus().Subscribe(GameEventType.InputEvent, stateMachine);
+        // GalagaBus.GetBus().Subscribe(GameEventType.PlayerEvent, player);
+
         // eventBus.Subscribe(GameEventType.GameStateEvent, stateMachine);
         // eventBus.Subscribe(GameEventType.PlayerEvent, this); //Subscribed to player
 

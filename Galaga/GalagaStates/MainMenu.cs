@@ -25,7 +25,7 @@ public class MainMenu : IGameState {
     // Button attributes
     private Vec3I greenActive;
     private Vec3I grayPassive;
-    private int fontSize = 45;//
+    private int fontSize = 500;
     private int activeMenuButton = 0;
     private int maxMenuButtons = 1;
 
@@ -43,7 +43,7 @@ public class MainMenu : IGameState {
         // Background
         image = new Image(Path.Combine("Assets", "Images", "TitleImage.png"));
         shape = new StationaryShape(0f, 0f, 1f, 1f);
-        backGroundImage= new Entity(shape, image);
+        backGroundImage = new Entity(shape, image);
         // Buttons
         newGamePosition = new Vec2F(0.4f, 0.45f);//
         newGameExtent = new Vec2F(0.2f, 0.1f);
@@ -62,6 +62,7 @@ public class MainMenu : IGameState {
 
     public void UpdateState() {
         GalagaBus.GetBus().ProcessEventsSequentially();
+        // GalagaBus.GetBus().ProcessEvents();
     }
 
     public void RenderState() {

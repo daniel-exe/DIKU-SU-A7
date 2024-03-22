@@ -139,15 +139,14 @@ public class GameRunning : IGameState {
                 });
                 break;
 
-            // Handled by game.
-            // //Close window if escape is pressed
-            // case KeyboardKey.Escape:
-            //     GalagaBus.GetBus().RegisterEvent(new GameEvent {
-            //         From = this,
-            //         EventType = GameEventType.WindowEvent,
-            //         Message = "CLOSE_WINDOW",
-            //     });
-            //     break;
+            case KeyboardKey.Escape:
+                GalagaBus.GetBus().RegisterEvent (new GameEvent {
+                        EventType = GameEventType.GameStateEvent,
+                        Message = "CHANGE_STATE",
+                        StringArg1 = "GAME_PAUSED"
+                    }
+                );
+                break;
         }
     }
     private void KeyRelease(KeyboardKey key) {

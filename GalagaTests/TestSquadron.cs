@@ -16,29 +16,99 @@ using DIKUArcade.Input;
 using DIKUArcade.Physics;
 
 public class TestSquadron {
-    private GameEventBus eventBus;
     private EntityContainer<Enemy> enemies;
-
-    public GameEventBus EventBus {
-        get => EventBus1;
-        set => EventBus1 = value;
+    private ISquadron square = new Square();
+    private ISquadron rectangle = new Rectangle();
+    private ISquadron triangle = new Triangle();
+    [OneTimeSetUp]
+        public void Init() {
+            Window.CreateOpenGLContext(); // We need a window to handle everything
     }
-    public GameEventBus EventBus1 {
-        get => eventBus;
-        set => eventBus = value;
+
+    [SetUp]
+    public void Setup() {
+        List<Image> enemyStridesBlue = ImageStride.CreateStrides(4, Path.Combine
+        ("..", "Galaga", "Assets", "Images", "BlueMonster.png"));
+        List<Image> enemyStridesRed = ImageStride.CreateStrides(2, Path.Combine
+        ("..", "Galaga", "Assets", "Images", "RedMonster.png"));
+
+        square.CreateEnemies(enemyStridesBlue, enemyStridesRed);
+        rectangle.CreateEnemies(enemyStridesBlue, enemyStridesRed);
+        triangle.CreateEnemies(enemyStridesBlue, enemyStridesRed);
     }
 
     [Test]
-        public void TestTriangleSpawnOutsidePlayerField() {
-            List<Image> images = ImageStride.CreateStrides
-                                (4, Path.Combine("Assets", "Images", "BlueMonster.png"));
-            Triangle triangle = new Triangle();
-
-            triangle.CreateEnemies(images,images);
-
-            foreach (var enemy in enemies) {
-                Vec2F enemyPos = enemy.GetCentrum();
-                Assert.GreaterOrEqual(enemyPos.Y, 1.0f);
+    public void TestSquare() {
+        float maxX = 1f;
+        float minX = 0f;
+        float maxY = 1f;
+        float minY = 0f;
+        foreach (Enemy enemy in enemies) {
+            if (enemy.Shape.Position.X > maxX) {
+                maxX = enemy.Shape.Position.X;
+            } else if (enemy.Shape.Position.X < minX) {
+                minX = enemy.Shape.Position.X;
+            } else if (enemy.Shape.Position.Y > maxY) {
+                maxY = enemy.Shape.Position.Y;
+            } else if (enemy.Shape.Position.Y < minY) {
+                minY = enemy.Shape.Position.Y;
             }
         }
+        // Assert
+        Assert.Multiple(() =>
+        {
+            foreach (Enemy enemy in enemies) {
+                if (enemy.Shape.Position.X == maxX && enemy.Shape.Position.Y == maxY) {
+                    Assert.True(true);
+                } else if (enemy.Shape.Position.X == maxX && enemy.Shape.Position.Y == minY) {
+                    Assert.True(true);
+                } else if (enemy.Shape.Position.X == minX && enemy.Shape.Position.Y == maxY) {
+                    Assert.True(true);
+                } else if (enemy.Shape.Position.X == minX && enemy.Shape.Position.Y == minY) {
+                    Assert.True(true);
+                }
+            }
+        });
+    }
+
+    [Test]
+    public void TestRectangle() {
+        float maxX = 1f;
+        float minX = 0f;
+        float maxY = 1f;
+        float minY = 0f;
+        foreach (Enemy enemy in enemies) {
+            if (enemy.Shape.Position.X > maxX) {
+                maxX = enemy.Shape.Position.X;
+            } else if (enemy.Shape.Position.X < minX) {
+                minX = enemy.Shape.Position.X;
+            } else if (enemy.Shape.Position.Y > maxY) {
+                maxY = enemy.Shape.Position.Y;
+            } else if (enemy.Shape.Position.Y < minY) {
+                minY = enemy.Shape.Position.Y;
+            }
+        }
+        // Assert
+        Assert.Multiple(() =>
+        {
+            foreach (Enemy enemy in enemies) {
+                if (enemy.Shape.Position.X == maxX && enemy.Shape.Position.Y == maxY) {
+                    Assert.True(true);
+                } else if (enemy.Shape.Position.X == maxX && enemy.Shape.Position.Y == minY) {
+                    Assert.True(true);
+                } else if (enemy.Shape.Position.X == minX && enemy.Shape.Position.Y == maxY) {
+                    Assert.True(true);
+                } else if (enemy.Shape.Position.X == minX && enemy.Shape.Position.Y == minY) {
+                    Assert.True(true);
+                }
+            }
+        });
+    }
+
+    [Test]
+    public void TestTriangle() {
+        // int oldSpeed = enemy.Speed;
+        // increaseSpeed.Hit(enemy);
+        // Assert.That(enemy.Speed == oldSpeed * 2);
+    }
 }

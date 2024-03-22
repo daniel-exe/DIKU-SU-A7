@@ -19,11 +19,11 @@ public class Triangle : ISquadron {
     public int MaxEnemies {
         get;
     }
-    // The triangle instantiates a BASE_X and Y, that constitutes the triangles dimensions
+    // The triangle instantiates a BASE_X and Y, that constitutes the triangles' dimensions
     // where BASE_X is the leftmost vertex' placement.
-    // It then calculates the height and uses it to place the top vertex
-    // Left vertex uses the forementioned base, and the right most vertex is mirrored
-    // Its not as versitile as Square and Rectangle, in terms of build in scaling options.
+    // It then calculates the height and uses it to place the bottom vertex
+    // Left vertex uses the aforementioned base, and the right most vertex is mirrored
+    // Its not as versatile as Square and Rectangle, in terms of build in scaling options.
     public void CreateEnemies(List<Image> enemyStride, List<Image> alternativeEnemyStride) {
         const float BASE_X = 0.4f;
         const float BASE_Y = 0.7f;

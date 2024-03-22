@@ -11,19 +11,16 @@ using HitStrategy;
 
 public class Enemy : Entity {
 
-    public float StartPositionX {
-        get;
-    } //til TA: burde dette maaske laves med field + properties?
-    public float StartPositionY {
-        get;
-    } //til TA: burde dette maaske laves med field + properties?
+    public float StartPositionX { get; }
+    public float StartPositionY { get; }
 
-    private int maxHitPoints = 10; //Maybe constant.
+    private int maxHitPoints = 10;
     private int hitPoints;
 
     public IBaseImage enemyStridesRed;
 
-    public List<Image> enemyStridesGreen = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "GreenMonster.png"));
+    public List<Image> enemyStridesGreen = ImageStride.CreateStrides(2, Path.Combine
+    ("Assets", "Images", "GreenMonster.png"));
     private int speed = 1;
 
     private List<Type> hitStratList;
@@ -54,13 +51,14 @@ public class Enemy : Entity {
         set {
             if (value <= MaxHitPoints) {
                 hitPoints = value;
-            } else {
-                hitPoints = MaxHitPoints;
             }
+            
+            else { hitPoints = MaxHitPoints; }
         }
     }
 
-    public Enemy(DynamicShape shape, IBaseImage image, IBaseImage alternativeEnemyImage) : base(shape, image) {
+    public Enemy(DynamicShape shape, IBaseImage image, IBaseImage alternativeEnemyImage) : 
+    base(shape, image) {
         StartPositionX = shape.Position.X;
         StartPositionY = shape.Position.Y;
         this.shape = shape;

@@ -42,7 +42,7 @@ public class Player : IGameEventProcessor {
         //Defining the borders:
         float leftBorder = 0;
         float bottomBorder = 0;
-        //Since player position is calcualted from bottom left corner of the entity
+        //Since player position is calculated from bottom left corner of the entity
         //we have to subtract the player width and height from the right and bottom borders.
         float rightBorder = 1 - playerWidth;
         float topBorder = 1 - playerHeight;
@@ -51,11 +51,12 @@ public class Player : IGameEventProcessor {
         float nextPosX = posX + moveLeft + moveRight;
         float nextPosY = posY + moveUp + moveDown;
         //Checking if next position is out of bounds:
-        if ((nextPosX > leftBorder && nextPosX < rightBorder) && (nextPosY > bottomBorder && nextPosY < topBorder)) {
+        if (nextPosX > leftBorder && nextPosX < rightBorder &&
+        nextPosY > bottomBorder && nextPosY < topBorder) {
             shape.Move();
         }
     }
-    public void SetMoveLeft(bool val) {
+    private void SetMoveLeft(bool val) {
         if (val) {
             moveLeft -= MOVEMENT_SPEED;
         } else {
@@ -97,8 +98,8 @@ public class Player : IGameEventProcessor {
         Vec2F pos = shape.Position;
         float playerWidth = shape.Extent.X;
         float playerHeight = shape.Extent.Y;
-        float centreX = pos.X + (playerWidth / 2);
-        float centreY = pos.Y + (playerHeight / 2);
+        float centreX = pos.X + playerWidth / 2;
+        float centreY = pos.Y + playerHeight / 2;
         Vec2F centre = new Vec2F(centreX, centreY);
         return centre;
     }

@@ -13,17 +13,16 @@ public class Enemy : Entity {
 
     public float StartPositionX {
         get;
-    } //til TA: burde dette måske laves med field + properties?
+    } //til TA: burde dette maaske laves med field + properties?
     public float StartPositionY {
         get;
-    } //til TA: burde dette måske laves med field + properties?
+    } //til TA: burde dette maaske laves med field + properties?
 
-    private int maxHitpoints = 10; //Maybe constant.
-    private int hitpoints;
+    private int maxHitPoints = 10; //Maybe constant.
+    private int hitPoints;
 
     public IBaseImage enemyStridesRed;
 
-    //Bruges ikke!!!??:
     public List<Image> enemyStridesGreen = ImageStride.CreateStrides(2, Path.Combine("Assets", "Images", "GreenMonster.png"));
     private int speed = 1;
 
@@ -42,21 +41,21 @@ public class Enemy : Entity {
         }
     }
 
-    public int MaxHitpoints {
+    public int MaxHitPoints {
         get {
-            return maxHitpoints;
+            return maxHitPoints;
         }
     }
 
-    public int Hitpoints {
+    public int HitPoints {
         get {
-            return hitpoints;
+            return hitPoints;
         }
         set {
-            if (value <= MaxHitpoints) {
-                hitpoints = value;
+            if (value <= MaxHitPoints) {
+                hitPoints = value;
             } else {
-                hitpoints = MaxHitpoints;
+                hitPoints = MaxHitPoints;
             }
         }
     }
@@ -65,7 +64,7 @@ public class Enemy : Entity {
         StartPositionX = shape.Position.X;
         StartPositionY = shape.Position.Y;
         this.shape = shape;
-        Hitpoints = MaxHitpoints;
+        HitPoints = MaxHitPoints;
         enemyStridesRed = alternativeEnemyImage;
         GetStrategyList();
     }
@@ -91,7 +90,7 @@ public class Enemy : Entity {
     }
 
     public bool GetHit(int damage) {
-        Hitpoints -= damage;
+        HitPoints -= damage;
         hitStrat = GetRndStrategy();
         return hitStrat.Hit(this);
     }

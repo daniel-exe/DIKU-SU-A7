@@ -36,24 +36,24 @@ public class TestsPlayer {
     [Test]
     public void TestMoveLeft() {
         // Arrange
-        float oldX = player.GetPosition().X;
+        float oldX = player.GetCentrum().X;
         moveEvent.Message = "MOVE_LEFT";
         // Act
         player.ProcessEvent(moveEvent);
         player.Move();
         // Assert
-        Assert.True(player.GetPosition().X == (oldX - 0.01f));
+        Assert.True(player.GetCentrum().X == oldX - 0.01f);
     }
 
     [Test]
     public void TestMoveRight() {
-        float oldX = player.GetPosition().X;
+        float oldX = player.GetCentrum().X;
         moveEvent.Message = "MOVE_RIGHT";
 
         player.ProcessEvent(moveEvent);
         player.Move();
 
-        Assert.True(player.GetPosition().X == (oldX + 0.01f));
+        Assert.True(player.GetCentrum().X == oldX + 0.01f);
     }
 
     [Test]
@@ -61,12 +61,12 @@ public class TestsPlayer {
         moveEvent.Message = "MOVE_LEFT";
         player.ProcessEvent(moveEvent);
 
-        while (player.GetPosition().X > 0.0f) {
+        while (player.GetCentrum().X > 0.0f) {
             player.Move();
         }
 
         player.Move();
-        Assert.True(player.GetPosition().X == 0.0f);
+        Assert.True(player.GetCentrum().X == 0.0f);
     }
 
     [Test]
@@ -74,11 +74,11 @@ public class TestsPlayer {
         moveEvent.Message = "MOVE_RIGHT";
         player.ProcessEvent(moveEvent);
 
-        while (player.GetPosition().X < 0.9f) {
+        while (player.GetCentrum().X < 0.9f) {
             player.Move();
         }
 
         player.Move();
-        Assert.True(player.GetPosition().X == 0.9f);
+        Assert.True(player.GetCentrum().X == 0.9f);
     }
 }

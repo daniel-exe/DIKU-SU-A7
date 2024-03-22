@@ -1,11 +1,10 @@
+namespace GalagaTests;
+
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Collections.Generic;
 using Galaga.GalagaStates;
-
-
-namespace GalagaTests;
 
 public class TestStateTransform {
     [Test]

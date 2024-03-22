@@ -38,7 +38,14 @@ public class TestsHitStrategy {
         new NoImage()
     );
     private IBaseImage startImg = new Image(Path.Combine("..", "Galaga", "Assets", "Images", "BlueMonster.png"));
+    
+    [OneTimeSetUp]
+    public void Init() {
+        DIKUArcade.GUI.Window.CreateOpenGLContext();
 
+        // Window.CreateOpenGLContext(); // We need a window to handle everything
+    }
+    
     [SetUp]
     public void Setup() {
         enemy = new Enemy(
@@ -79,10 +86,9 @@ public class TestsHitStrategy {
     [Test]
     public void TestEnraged() {
     int oldSpeed = enemy.Speed;
-    increaseSpeed.Hit(enemy);
-    
-    enemy.HitPoints = 5;     
-    changeColor.Hit(enemy);
+    enemy.HitPoints = 5;
+
+    enraged.Hit(enemy);
     
     Assert.Multiple(() =>
     {

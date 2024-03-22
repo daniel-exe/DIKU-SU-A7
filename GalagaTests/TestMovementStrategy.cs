@@ -27,6 +27,12 @@ public class TestsMovementStrategy {
     );
     private Vec2F oldPosition = new Vec2F(0f, 0f);
 
+    [OneTimeSetUp]
+    public void Init() {
+        DIKUArcade.GUI.Window.CreateOpenGLContext();
+        // Window.CreateOpenGLContext(); // We need a window to handle everything
+    }
+
     [SetUp]
     public void Setup() {
         enemy = new Enemy(

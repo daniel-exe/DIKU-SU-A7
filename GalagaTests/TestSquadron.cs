@@ -20,9 +20,12 @@ public class TestSquadron {
     private ISquadron square = new Square();
     private ISquadron rectangle = new Rectangle();
     private ISquadron triangle = new Triangle();
+    
     [OneTimeSetUp]
-        public void Init() {
-            Window.CreateOpenGLContext(); // We need a window to handle everything
+    public void Init() {
+        DIKUArcade.GUI.Window.CreateOpenGLContext();
+
+        // Window.CreateOpenGLContext(); // We need a window to handle everything
     }
 
     [SetUp]
